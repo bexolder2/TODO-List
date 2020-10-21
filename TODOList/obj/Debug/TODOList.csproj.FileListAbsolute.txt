@@ -1,0 +1,17 @@
+c:\Users\User\source\repos\TODOList\TODOList\bin\Debug\TODOList.exe.config
+c:\Users\User\source\repos\TODOList\TODOList\bin\Debug\TODOList.exe
+c:\Users\User\source\repos\TODOList\TODOList\bin\Debug\TODOList.pdb
+c:\Users\User\source\repos\TODOList\TODOList\obj\Debug\TODOList.csprojAssemblyReference.cache
+c:\Users\User\source\repos\TODOList\TODOList\obj\Debug\MainWindow.g.cs
+c:\Users\User\source\repos\TODOList\TODOList\obj\Debug\App.g.cs
+c:\Users\User\source\repos\TODOList\TODOList\obj\Debug\TODOList_MarkupCompile.cache
+c:\Users\User\source\repos\TODOList\TODOList\obj\Debug\TODOList_MarkupCompile.lref
+c:\Users\User\source\repos\TODOList\TODOList\obj\Debug\MainWindow.baml
+c:\Users\User\source\repos\TODOList\TODOList\obj\Debug\TODOList.g.resources
+c:\Users\User\source\repos\TODOList\TODOList\obj\Debug\TODOList.Properties.Resources.resources
+c:\Users\User\source\repos\TODOList\TODOList\obj\Debug\TODOList.csproj.GenerateResource.cache
+c:\Users\User\source\repos\TODOList\TODOList\obj\Debug\TODOList.csproj.CoreCompileInputs.cache
+c:\Users\User\source\repos\TODOList\TODOList\obj\Debug\TODOList.exe
+c:\Users\User\source\repos\TODOList\TODOList\obj\Debug\TODOList.pdb
+c:\Users\User\source\repos\TODOList\TODOList\obj\Debug\DialogXaml\NewProject.g.cs
+c:\Users\User\source\repos\TODOList\TODOList\obj\Debug\DialogXaml\NewProject.baml

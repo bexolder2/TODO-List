@@ -16,10 +16,11 @@ namespace TODOList.Logic
         public Person Responsible { get; set; }
         public int TaskStatus { get; set; }
         public int TaskStatusColor { get; set; }
+        public List<Task> Childrens { get; set; }
 
         public Task()
         {
-
+            Childrens = new List<Task>();
         }
 
         public Task(string name, string sdesc, string ldesc, DateTime start, DateTime finish, Person person)
@@ -30,12 +31,24 @@ namespace TODOList.Logic
             Start = start;
             Finish = finish;
             Responsible = person;
+
+            Childrens = new List<Task>();
         }
 
         public void SetStatus(Status status)
         {
             TaskStatus = (int)status;
             TaskStatusColor = TaskStatus;
+        }
+
+        public void AddChildren()
+        {
+
+        }
+
+        public void DeleteChildren()
+        {
+
         }
     }
 }

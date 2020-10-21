@@ -10,29 +10,26 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TODOList
+namespace TODOList.DialogXaml
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Логика взаимодействия для NewProject.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class NewProject : Window
     {
-        public MainWindow()
+        public NewProject()
         {
             InitializeComponent();
+
+            Drawing.DrawDialog draw = new Drawing.DrawDialog();
+            //draw.DrawStartPageNP(npDialog, npGrid);
         }
 
-        private void NewProject_Click(object sender, RoutedEventArgs e)
+        private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            Logic.Program.AddProject();
-        }
-
-        private void OpenProject_Click(object sender, RoutedEventArgs e)
-        {
-            
+            this.Close();
         }
     }
 }
