@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace TODOList.Logic
 {
-    public class Task
+    public class Task : IDataErrorInfo
     {
         public string TaskName { get; set; }
         public string ShortDescription { get; set; }
@@ -14,6 +15,7 @@ namespace TODOList.Logic
         public DateTime Start { get; set; }
         public DateTime Finish { get; set; }
         public Person Responsible { get; set; }
+        public string BufferResponsible { get; set; } //TODO:buff -> Responsible.Name
         public int TaskStatus { get; set; }
         public int TaskStatusColor { get; set; }
         public List<Task> Childrens { get; set; }
@@ -21,6 +23,7 @@ namespace TODOList.Logic
         public Task()
         {
             Childrens = new List<Task>();
+            Responsible = new Person();
         }
 
         public Task(string name, string sdesc, string ldesc, DateTime start, DateTime finish, Person person)
@@ -50,5 +53,50 @@ namespace TODOList.Logic
         {
 
         }
+
+        public string this[string columnName]
+        {
+            get
+            {
+                string error = String.Empty;
+                switch (columnName)
+                {
+                    case "TaskName":
+                        if(TaskName == null)
+                        {
+                            error = "Enter correct name.";
+                        }
+                        break;
+                    case "ShortDescription":
+                        break;
+                    case "LongDescription":
+                        break;
+                    case "Start":
+                        if (Start.Date < DateTime.Now)
+                        {
+                            error = "Enter correct start date.";
+                        }
+                        break;
+                    case "Finish":
+                        if(Finish.Date < DateTime.Now & Finish.Date < Start.Date)
+                        {
+                            error = "Enter correct finish date.";
+                        }
+                        break;
+                    case "BufferResponsible":
+                        if (BufferResponsible == null)
+                        {
+                            error = "Enter correct person name.";
+                        }
+                        break;
+                }
+                return error;
+            }
+        }
+        public string Error
+        {
+            get { throw new NotImplementedException(); }
+        }
+
     }
 }

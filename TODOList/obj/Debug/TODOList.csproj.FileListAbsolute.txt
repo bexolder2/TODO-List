@@ -15,3 +15,5 @@ c:\Users\User\source\repos\TODOList\TODOList\obj\Debug\TODOList.exe
 c:\Users\User\source\repos\TODOList\TODOList\obj\Debug\TODOList.pdb
 c:\Users\User\source\repos\TODOList\TODOList\obj\Debug\DialogXaml\NewProject.g.cs
 c:\Users\User\source\repos\TODOList\TODOList\obj\Debug\DialogXaml\NewProject.baml
+c:\Users\User\source\repos\TODOList\TODOList\obj\Debug\DialogXaml\NewTask.g.cs
+c:\Users\User\source\repos\TODOList\TODOList\obj\Debug\DialogXaml\NewTask.baml

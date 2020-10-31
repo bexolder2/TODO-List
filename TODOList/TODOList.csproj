@@ -59,6 +59,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="DialogXaml\NewTask.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -71,9 +75,13 @@
     <Compile Include="DialogXaml\NewProject.xaml.cs">
       <DependentUpon>NewProject.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DialogXaml\NewTask.xaml.cs">
+      <DependentUpon>NewTask.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Drawing\DrawDiagram.cs" />
-    <Compile Include="Drawing\DrawDialog.cs" />
+    <Compile Include="Dialogs\GetData.cs" />
     <Compile Include="Drawing\DrawTaskTree.cs" />
+    <Compile Include="Logic\GlobalVariables.cs" />
     <Compile Include="Logic\Person.cs" />
     <Compile Include="Logic\Program.cs" />
     <Compile Include="Logic\Project.cs" />

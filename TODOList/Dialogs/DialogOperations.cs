@@ -11,7 +11,13 @@ namespace TODOList.Dialogs
         public static void GetNewProjectData(Logic.Project project)
         {
             DialogXaml.NewProject newPr = new DialogXaml.NewProject();
-            newPr.ShowDialog();
+            newPr.ShowDialog();  
+        }
+
+        public static void GetTaskData()
+        {
+            DialogXaml.NewTask newTask = new DialogXaml.NewTask();
+            newTask.ShowDialog();
         }
     }
 }

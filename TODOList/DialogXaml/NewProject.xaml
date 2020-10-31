@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TODOList.DialogXaml"
         mc:Ignorable="d"
-        Title="NewProject" Height="116" Width="196.3"
+        Title="NewProject" Height="110" Width="196.3"
         x:Name="npDialog"
         WindowStyle="None">
-    <Grid x:Name="npGrid" Margin="0,0,0,2">
-        <Label Margin="5,0,10,74" >Enter new project name</Label>
-        <TextBox  MaxLength="20" Margin="10,32,10,49" RenderTransformOrigin="0.464,2.667"></TextBox>
-        <Button Margin="10,72,105,10" >Save</Button>
-        <Button Margin="105,72,10,10" RenderTransformOrigin="0.165,1.522" Click="Cancel_Click">Cancel</Button>
+    <Grid x:Name="npGrid">
+        <Label Margin="5,-5,10,74" MouseLeftButtonDown="MouseLeftButtonDown_Move">Enter new project name</Label>
+        <TextBox x:Name="tbName" MaxLength="20" Margin="10,28,10,46"></TextBox>
+        <Button Margin="10,66,95,6" Click="Save_Click">Save</Button>
+        <Button Margin="95,66,10,6" Click="Cancel_Click">Cancel</Button>
     </Grid>
 </Window>

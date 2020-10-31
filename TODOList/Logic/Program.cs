@@ -23,11 +23,8 @@ namespace TODOList.Logic
 
     public static class Program
     {
-        public static DateTime CurrentDate { get; set; }
-        public static List<Project> Projects { get; set; }
-
         // TODO: Init list
-        
+
         //public static Program()
         //{
         //    Projects = new List<Project>();
