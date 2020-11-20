@@ -18,12 +18,14 @@ namespace TODOList.Logic
         public string BufferResponsible { get; set; } //TODO:buff -> Responsible.Name
         public int TaskStatus { get; set; }
         public int TaskStatusColor { get; set; }
-        public List<Task> Childrens { get; set; }
+        public List<Task> Children { get; set; }
 
         public Task()
         {
-            Childrens = new List<Task>();
+            Children = new List<Task>();
             Responsible = new Person();
+            Start = DateTime.Now;
+            Finish = DateTime.Now;
         }
 
         public Task(string name, string sdesc, string ldesc, DateTime start, DateTime finish, Person person)
@@ -35,7 +37,7 @@ namespace TODOList.Logic
             Finish = finish;
             Responsible = person;
 
-            Childrens = new List<Task>();
+            Children = new List<Task>();
         }
 
         public void SetStatus(Status status)
@@ -72,13 +74,13 @@ namespace TODOList.Logic
                     case "LongDescription":
                         break;
                     case "Start":
-                        if (Start.Date < DateTime.Now)
+                        if (Start.Date < DateTime.Now.Date)
                         {
                             error = "Enter correct start date.";
                         }
                         break;
                     case "Finish":
-                        if(Finish.Date < DateTime.Now & Finish.Date < Start.Date)
+                        if(Finish.Date < DateTime.Now.Date & Finish.Date < Start.Date)
                         {
                             error = "Enter correct finish date.";
                         }

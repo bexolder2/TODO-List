@@ -81,6 +81,7 @@
     <Compile Include="Drawing\DrawDiagram.cs" />
     <Compile Include="Dialogs\GetData.cs" />
     <Compile Include="Drawing\DrawTaskTree.cs" />
+    <Compile Include="Logic\DataConverter.cs" />
     <Compile Include="Logic\GlobalVariables.cs" />
     <Compile Include="Logic\Person.cs" />
     <Compile Include="Logic\Program.cs" />

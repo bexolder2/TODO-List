@@ -23,16 +23,42 @@ namespace TODOList.DialogXaml
 
             dpSDate.DisplayDateStart = DateTime.Now;
             dpFDate.DisplayDateStart = DateTime.Now;
-            DataContext = Logic.GlobalVariables.BufferTask; //TODO: Converter for date
+            DataContext = Logic.GlobalVariables.BufferTask;
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
+            //if(cbNextTask.IsChecked == true)
+            //{
+            //    if(cbChildTask.IsChecked == true)
+            //    {
+            //        Logic.GlobalVariables.ChildFlag = true;
+            //        Dialogs.GetData.GetTaskData();
+            //        Dialogs.DialogOperations.GetTaskData();
+            //        Close();
+            //    }
+            //    else
+            //    {
+            //        Logic.GlobalVariables.ChildFlag = false;
+            //        Logic.GlobalVariables.BufferTask.Children = null;
+            //        Dialogs.GetData.GetTaskData();
+            //        Dialogs.DialogOperations.GetTaskData();
+            //        Close();
+            //    }
+            //}
+            //else
+            //{
+            //    Dialogs.GetData.GetTaskData();
+            //    Close();
+            //}
             Dialogs.GetData.GetTaskData();
+            Close();
+            Dialogs.DialogOperations.GetTaskData();
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
+            //Logic.Program.Prj.Last();
             Logic.GlobalVariables.BufferTask = null;
             Close();
         }

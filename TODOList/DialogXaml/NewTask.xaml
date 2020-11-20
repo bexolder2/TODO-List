@@ -5,9 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TODOList.DialogXaml"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:custom="clr-namespace:TODOList.Logic"
         mc:Ignorable="d"
         x:Name="ntDialog"
         Title="New Task" Height="390" Width="350">
+    <Window.Resources>
+        <custom:DataConverter x:Key="myDateConverter" />
+    </Window.Resources>
+
     <Grid Height="390" Width="350" x:Name="TaskGrid">
         <Label Margin="16,5,266,358">Task name</Label>
         <TextBox x:Name="tbName" Margin="99,7,86,358" MaxLength="50">
@@ -31,11 +36,27 @@
             </TextBox.Style>
         </TextBox>
         <Label Margin="16,39,230,320">Short description</Label>
-        <TextBox x:Name="tbSDesc" Margin="120,38,22,325"></TextBox>
+        <TextBox x:Name="tbSDesc" Margin="120,38,22,325">
+            <TextBox.Text>
+                <Binding Path="ShortDescription">
+                    <Binding.ValidationRules>
+                        <DataErrorValidationRule />
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
         <Label Margin="16,73,230,289">Long description</Label>
-        <TextBox x:Name="tbLDesc" Margin="16,106,22,181"></TextBox>
+        <TextBox x:Name="tbLDesc" Margin="16,106,22,181">
+            <TextBox.Text>
+                <Binding Path="LongDescription">
+                    <Binding.ValidationRules>
+                        <DataErrorValidationRule />
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
         <Label Margin="16,224,266,139">Start time</Label>
-        <DatePicker x:Name="dpSDate" IsDropDownOpen="False" Margin="99,224,120,139">
+        <DatePicker x:Name="dpSDate" IsDropDownOpen="False" Margin="99,224,120,139" SelectedDate="{x:Static system:DateTime.Now}">
             <DatePicker.DisplayDate>
                 <Binding Path="Start">
                     <Binding.ValidationRules>
@@ -56,7 +77,7 @@
             </DatePicker.Style>
         </DatePicker>
         <Label Margin="16,269,266,94">Finish time</Label>
-        <DatePicker x:Name="dpFDate" IsDropDownOpen="False" Margin="99,269,120,94">
+        <DatePicker x:Name="dpFDate" IsDropDownOpen="False" Margin="99,269,120,94" SelectedDate="{x:Static system:DateTime.Now}">
             <DatePicker.DisplayDate>
                 <Binding Path="Finish">
                     <Binding.ValidationRules>
@@ -77,7 +98,7 @@
             </DatePicker.Style>
         </DatePicker>
         <Label Margin="16,317,278,48">Person</Label>
-        <TextBox x:Name="tbPerson" Margin="99,317,86,48">
+        <TextBox x:Name="tbPerson" Margin="99,317,120,48">
             <TextBox.Text>
                 <Binding Path="BufferResponsible">
                     <Binding.ValidationRules>
@@ -109,17 +130,36 @@
                             <Setter Property="IsEnabled" Value="False"/>
                         </DataTrigger>
 
-                        <DataTrigger Binding="{Binding ElementName=dpSDate, Path=SelectedDate}" 
-                                     Value="{x:Static system:DateTime.Now}">
+                        <DataTrigger Binding="{Binding ElementName=dpFDate, Path=SelectedDate, Converter={StaticResource myDateConverter}}" 
+                                     Value="1">
                             <Setter Property="IsEnabled" Value="False"/>
                         </DataTrigger>
-                        
+
                     </Style.Triggers>
                 </Style>
             </Button.Style>
         </Button>
         <Button x:Name="bCancel" Margin="254,269,22,94" Click="Cancel_Click" Content="Cancel">
-            
         </Button>
+
+        <!--<CheckBox x:Name="cbNextTask" Content="Next task" Margin="251,313,22,60">
+            <CheckBox.Style>
+                <Style TargetType="CheckBox">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=cbChildTask, Path=IsChecked}" Value="False">
+                            <Setter Property="IsEnabled" Value="True"/>
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding ElementName=cbChildTask, Path=IsChecked}" Value="True">
+                            <Setter Property="IsEnabled" Value="False"/>
+                            <Setter Property="IsChecked" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </CheckBox.Style>
+        </CheckBox>
+        <CheckBox x:Name="cbChildTask" Content="Child task" Margin="251,330,22,43">
+
+        </CheckBox>-->
     </Grid>
 </Window>

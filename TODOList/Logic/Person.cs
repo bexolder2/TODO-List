@@ -9,6 +9,11 @@ namespace TODOList.Logic
     public class Person
     {
         public string Name { get; set; }
-        public Task AvailableTasks { get; set; }
+        public List<Task> AvailableTasks { get; set; }
+
+        public Person()
+        {
+            AvailableTasks = new List<Task>();
+        }
     }
 }

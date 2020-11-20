@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,11 +25,12 @@ namespace TODOList.Logic
     public static class Program
     {
         // TODO: Init list
+        public static List<Project> Prj;
 
-        //public static Program()
-        //{
-        //    Projects = new List<Project>();
-        //}
+        static Program()
+        {
+            Prj = new List<Project>();
+        }
 
         public static void AddProject()
         {
