@@ -9,12 +9,13 @@ namespace TODOList.Logic
         public static List<Project> Projects { get; set; }
         public static Project BufferPrj = new Project();
         public static Task BufferTask;
-        public static int LevelsCounter { get; set; }
+        public static Drawing.DrawTabControl DrawingTabControl = new Drawing.DrawTabControl();
+        //public static int LevelsCounter { get; set; }
         public static bool ChildFlag { get; set; }
 
         static GlobalVariables()
         {
-            LevelsCounter = 0;
+            //LevelsCounter = 0;
             ChildFlag = false;
         }
     }

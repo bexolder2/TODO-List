@@ -60,6 +60,11 @@ namespace TODOList.DialogXaml
         {
             //Logic.Program.Prj.Last();
             Logic.GlobalVariables.BufferTask = null;
+
+            //Drawing
+            Logic.GlobalVariables.DrawingTabControl.CreateTabItem(Logic.Program.Prj.Last().ProjectName);
+            //Drawing
+
             Close();
         }
     }

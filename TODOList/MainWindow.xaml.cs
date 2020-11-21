@@ -34,5 +34,10 @@ namespace TODOList
         {
             
         }
+
+        public Grid GetMainWindowGrid()
+        {
+            return RootGrid;
+        }
     }
 }

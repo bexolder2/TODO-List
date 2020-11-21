@@ -41,6 +41,8 @@ namespace TODOList.DialogXaml
             Close();
             Dialogs.DialogOperations.GetTaskData();
             //Dialogs.GetData.GetProjectName();
+            MainWindow.GetMainWindowGrid();
+            Logic.GlobalVariables.DrawingTabControl.CreateTabControl(GetMainWindowGrid(), "TabControl1");
         }
     }
 }
