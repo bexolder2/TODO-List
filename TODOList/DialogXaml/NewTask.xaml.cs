@@ -16,6 +16,8 @@ namespace TODOList.DialogXaml
 {
     public partial class NewTask : Window
     {
+        public event EventHandler SaveNewTask;
+
         public NewTask()
         {
             InitializeComponent();
@@ -54,17 +56,14 @@ namespace TODOList.DialogXaml
             Dialogs.GetData.GetTaskData();
             Close();
             Dialogs.DialogOperations.GetTaskData();
+
+            SaveNewTask?.Invoke(this, null);
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             //Logic.Program.Prj.Last();
             Logic.GlobalVariables.BufferTask = null;
-
-            //Drawing
-            Logic.GlobalVariables.DrawingTabControl.CreateTabItem(Logic.Program.Prj.Last().ProjectName);
-            //Drawing
-
             Close();
         }
     }

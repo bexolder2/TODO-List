@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TODOList.Logic;
 
 namespace TODOList
 {
@@ -23,11 +24,27 @@ namespace TODOList
         public MainWindow()
         {
             InitializeComponent();
+
+            GlobalVariables.DrawingTabControl.CreateTabControl(GetMainWindowGrid(), "TabControl1");
+            Dialogs.DialogOperations.InitProject += DialogOperations_InitProject;    
+
+
+        }
+
+        private void DialogOperations_InitProject()
+        {
+            if (GlobalVariables.newPr != null)
+                GlobalVariables.newPr.SaveNewProject += NewPr_SaveNewProject;
+        }
+
+        private void NewPr_SaveNewProject(object sender, EventArgs e)
+        {
+            GlobalVariables.DrawingTabControl.CreateTabItem(Program.Prj.Last().ProjectName);
         }
 
         private void NewProject_Click(object sender, RoutedEventArgs e)
         {
-            Logic.Program.AddProject();
+            Program.AddProject();
         }
 
         private void OpenProject_Click(object sender, RoutedEventArgs e)

@@ -64,7 +64,7 @@ namespace TODOList.Logic
                 switch (columnName)
                 {
                     case "TaskName":
-                        if(TaskName == null)
+                        if(TaskName == null)//TODO:check spases
                         {
                             error = "Enter correct name.";
                         }

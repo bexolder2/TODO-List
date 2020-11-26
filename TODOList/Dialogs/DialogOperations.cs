@@ -3,21 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TODOList.Logic;
 
 namespace TODOList.Dialogs
 {
     public static class DialogOperations
     {
-        public static void GetNewProjectData(Logic.Project project)
+        public static event Action InitProject;
+        public static void GetNewProjectData(Project project)
         {
-            DialogXaml.NewProject newPr = new DialogXaml.NewProject();
-            newPr.ShowDialog();  
+            GlobalVariables.newPr = null;
+            GlobalVariables.newPr = new DialogXaml.NewProject();
+            InitProject?.Invoke();
+            GlobalVariables.newPr.ShowDialog();
         }
 
         public static void GetTaskData()
         {
-            DialogXaml.NewTask newTask = new DialogXaml.NewTask();
-            newTask.ShowDialog();
+            GlobalVariables.newTask = new DialogXaml.NewTask();
+            GlobalVariables.newTask.ShowDialog();
         }
     }
 }

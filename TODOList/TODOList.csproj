@@ -78,6 +78,7 @@
     <Compile Include="DialogXaml\NewTask.xaml.cs">
       <DependentUpon>NewTask.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Drawing\DrawContextMenu.cs" />
     <Compile Include="Drawing\DrawDiagram.cs" />
     <Compile Include="Dialogs\GetData.cs" />
     <Compile Include="Drawing\DrawTabControl.cs" />

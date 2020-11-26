@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using TODOList.Logic;
 
 namespace TODOList.Dialogs
 {
@@ -25,10 +26,10 @@ namespace TODOList.Dialogs
 
         public static void GetTaskData() 
         {
-            Logic.GlobalVariables.BufferTask.Responsible.Name = Logic.GlobalVariables.BufferTask.BufferResponsible;
-            Logic.GlobalVariables.BufferTask.Responsible.AvailableTasks.Add(Logic.GlobalVariables.BufferTask);
+            GlobalVariables.BufferTask.Responsible.Name = GlobalVariables.BufferTask.BufferResponsible;
+            GlobalVariables.BufferTask.Responsible.AvailableTasks.Add(GlobalVariables.BufferTask);
 
-            if (Logic.GlobalVariables.ChildFlag == true)
+            if (GlobalVariables.ChildFlag == true)
             {
 
             }
@@ -40,19 +41,19 @@ namespace TODOList.Dialogs
 
         public static void SaveTaskData()
         {          
-            Logic.Program.Prj.Last().Root.Add(Logic.GlobalVariables.BufferTask);
-            Logic.GlobalVariables.BufferTask = null;
+            Program.Prj.Last().Root.Add(GlobalVariables.BufferTask);
+            GlobalVariables.BufferTask = null;
         }
 
         public static void SaveChildTaskData()
         {
-            Logic.Program.Prj.Last().Root.Last().Children.Add(Logic.GlobalVariables.BufferTask);
-            Logic.GlobalVariables.BufferTask = null;
+            Program.Prj.Last().Root.Last().Children.Add(GlobalVariables.BufferTask);
+            GlobalVariables.BufferTask = null;
         }
 
         public static void EndSave()
         {
-            Logic.Program.Prj.Add(Logic.GlobalVariables.BufferPrj);
+            Program.Prj.Add(GlobalVariables.BufferPrj);
         }
     }
 }

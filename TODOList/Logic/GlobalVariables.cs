@@ -10,7 +10,10 @@ namespace TODOList.Logic
         public static Project BufferPrj = new Project();
         public static Task BufferTask;
         public static Drawing.DrawTabControl DrawingTabControl = new Drawing.DrawTabControl();
-        //public static int LevelsCounter { get; set; }
+
+        public static DialogXaml.NewProject newPr;// = new DialogXaml.NewProject();
+        public static DialogXaml.NewTask newTask;
+
         public static bool ChildFlag { get; set; }
 
         static GlobalVariables()

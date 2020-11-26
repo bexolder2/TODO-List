@@ -1,3 +1,5 @@
 .vs/
-TODOList/TODOList/bin/
-TODOList/TODOList/obj/
+TODOList/TODOList/bin
+TODOList/TODOList/obj
+*.sln
+*.csproj

@@ -16,6 +16,8 @@ namespace TODOList.DialogXaml
 {
     public partial class NewProject : Window
     {
+        public event EventHandler SaveNewProject;
+
         public NewProject()
         {
             InitializeComponent();
@@ -41,8 +43,7 @@ namespace TODOList.DialogXaml
             Close();
             Dialogs.DialogOperations.GetTaskData();
             //Dialogs.GetData.GetProjectName();
-            MainWindow.GetMainWindowGrid();
-            Logic.GlobalVariables.DrawingTabControl.CreateTabControl(GetMainWindowGrid(), "TabControl1");
+            SaveNewProject?.Invoke(this, null); //go to MainWindow.xaml.cs
         }
     }
 }
