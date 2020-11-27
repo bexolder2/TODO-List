@@ -25,10 +25,20 @@ namespace TODOList
         {
             InitializeComponent();
 
-            GlobalVariables.DrawingTabControl.CreateTabControl(GetMainWindowGrid(), "TabControl1");
-            Dialogs.DialogOperations.InitProject += DialogOperations_InitProject;    
+            GlobalVariables.DrawingTabControl.CreateTabControl(RootGrid, "TabControl1");
+            Dialogs.DialogOperations.InitProject += DialogOperations_InitProject;
+            Dialogs.DialogOperations.NewTask += DialogOperations_NewTask;
+        }
 
+        private void DialogOperations_NewTask()
+        {
+            if (GlobalVariables.newTask != null)
+                GlobalVariables.newTask.SaveNewTask += NewTask_SaveNewTask;
+        }
 
+        private void NewTask_SaveNewTask(object sender, EventArgs e)
+        {
+            GlobalVariables.DrawingTabControl.AddTaskItem(Program.Prj.Last().ProjectName); //TODO: current name
         }
 
         private void DialogOperations_InitProject()
@@ -40,6 +50,7 @@ namespace TODOList
         private void NewPr_SaveNewProject(object sender, EventArgs e)
         {
             GlobalVariables.DrawingTabControl.CreateTabItem(Program.Prj.Last().ProjectName);
+            GlobalVariables.BufferPrj = null;
         }
 
         private void NewProject_Click(object sender, RoutedEventArgs e)
@@ -52,9 +63,9 @@ namespace TODOList
             
         }
 
-        public Grid GetMainWindowGrid()
-        {
-            return RootGrid;
-        }
+        //public Grid GetMainWindowGrid()
+        //{
+        //    return RootGrid;
+        //}
     }
 }

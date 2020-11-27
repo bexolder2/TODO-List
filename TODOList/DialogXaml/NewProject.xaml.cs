@@ -41,9 +41,9 @@ namespace TODOList.DialogXaml
             MessageBox.Show($"Name saved: {Logic.GlobalVariables.BufferPrj.ProjectName}");
             Dialogs.GetData.EndSave();
             Close();
-            Dialogs.DialogOperations.GetTaskData();
-            //Dialogs.GetData.GetProjectName();
             SaveNewProject?.Invoke(this, null); //go to MainWindow.xaml.cs
+            Dialogs.DialogOperations.GetTaskData();
+            //Dialogs.GetData.GetProjectName();  
         }
     }
 }

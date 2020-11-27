@@ -10,8 +10,15 @@ namespace TODOList.Drawing
 {
     public class DrawTabControl
     {
-        private TabControl tabControl= new TabControl();
+        public TabControl tabControl { get; private set; }
         private DrawTaskTree drawTT;//TODO: maybe dynamic task tree
+        private Grid TabGrid;
+        private DrawContextMenu drawCM;
+
+        public DrawTabControl()
+        {
+            tabControl = new TabControl();
+        }
 
         public void CreateTabControl(Grid grid, string name)
         {
@@ -19,9 +26,6 @@ namespace TODOList.Drawing
             Thickness margin = tabControl.Margin;
             margin.Top = 20;
             tabControl.Margin = margin;
-
-            drawTT = new DrawTaskTree(tabControl);
-
             grid.Children.Add(tabControl);
         }
 
@@ -29,12 +33,28 @@ namespace TODOList.Drawing
         {
             TabItem tabItem = new TabItem();
             tabItem.Header = title;
+            TabGrid = new Grid();
+            tabItem.Content = TabGrid;
+            drawTT = new DrawTaskTree(TabGrid);
+            drawCM = new DrawContextMenu();
+            tabItem.ContextMenu = drawCM.contextMenuForTabItems;
             tabControl.Items.Add(tabItem);
+            tabItem.Focus();
         }
 
-        public void AddTaskItem()
+        public void AddTaskItem(string title)
         {
-            drawTT.CreateTreeViewItem()
+            drawTT.CreateTreeViewItem(title);
+        }
+
+        public string GetFocusTabItemHeader()
+        {
+            return (tabControl.Items[tabControl.SelectedIndex] as TabItem).Header.ToString();
+        }
+
+        public void DeleteTabItem()
+        {
+            tabControl.Items.Remove(tabControl.Items[tabControl.SelectedIndex]);
         }
     }
 }

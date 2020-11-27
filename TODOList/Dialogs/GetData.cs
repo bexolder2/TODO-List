@@ -40,14 +40,17 @@ namespace TODOList.Dialogs
         }
 
         public static void SaveTaskData()
-        {          
-            Program.Prj.Last().Root.Add(GlobalVariables.BufferTask);
+        {
+            Program.Prj.Find(x => x.ProjectName == GlobalVariables.DrawingTabControl.GetFocusTabItemHeader()).Root.Add(GlobalVariables.BufferTask);
             GlobalVariables.BufferTask = null;
         }
 
-        public static void SaveChildTaskData()
+        public static void SaveChildTaskData(string parent)
         {
-            Program.Prj.Last().Root.Last().Children.Add(GlobalVariables.BufferTask);
+            Program.Prj.Find(x => 
+            x.ProjectName == GlobalVariables.DrawingTabControl.GetFocusTabItemHeader()).Root.Find(x => 
+            x.TaskName == parent).Children.Add(GlobalVariables.BufferTask);
+            //TODO: current project->task treeview items number
             GlobalVariables.BufferTask = null;
         }
 

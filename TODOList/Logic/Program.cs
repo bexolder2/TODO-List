@@ -26,6 +26,7 @@ namespace TODOList.Logic
     {
         // TODO: Init list
         public static List<Project> Prj;
+        //private static Project test;
 
         static Program()
         {
@@ -34,9 +35,17 @@ namespace TODOList.Logic
 
         public static void AddProject()
         {
-            Project test = new Project();
-            test.NewProject();
+            //test = new Project();
+            GlobalVariables.BufferPrj = new Project();
+            GlobalVariables.BufferPrj.NewProject();
             //Projects.Add(project);
         } 
+
+        public static void DeleteProject(string projectName)
+        {
+            Prj.Remove(Prj.Find(x => x.ProjectName == projectName));
+            GlobalVariables.DrawingTabControl.DeleteTabItem();
+            GlobalVariables.DrawingTabControl.tabControl.Items.Refresh();
+        }
     }
 }

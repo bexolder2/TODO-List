@@ -7,7 +7,7 @@ namespace TODOList.Logic
     {
         public static DateTime CurrentDate { get; set; }
         public static List<Project> Projects { get; set; }
-        public static Project BufferPrj = new Project();
+        public static Project BufferPrj;// = new Project();
         public static Task BufferTask;
         public static Drawing.DrawTabControl DrawingTabControl = new Drawing.DrawTabControl();
 
