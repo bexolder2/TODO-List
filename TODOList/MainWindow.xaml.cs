@@ -38,7 +38,7 @@ namespace TODOList
 
         private void NewTask_SaveNewTask(object sender, EventArgs e)
         {
-            GlobalVariables.DrawingTabControl.AddTaskItem(Program.Prj.Last().ProjectName); //TODO: current name
+            //GlobalVariables.DrawingTabControl.AddTaskItem(Program.Prj.Last().ProjectName); //TODO: current name WTF?? maybe move to NewTask.xaml.cs
         }
 
         private void DialogOperations_InitProject()

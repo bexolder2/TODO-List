@@ -55,12 +55,14 @@ namespace TODOList.Drawing
 
         private void DeleteTask_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Delete task");
+            Project tmpPrj = Program.Prj.Find(x => x.ProjectName == GlobalVariables.DrawingTabControl.GetFocusTabItemHeader());
+            tmpPrj.DeleteTask(GlobalVariables.DrawingTabControl.drawTT.TreeViewItemHeader);
         }
 
         private void AddTask_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Add task");
+            GlobalVariables.ChildFlag = true;
+            Dialogs.DialogOperations.GetTaskData();
         }
 
         private void EditTask_Click(object sender, RoutedEventArgs e)

@@ -17,7 +17,7 @@
         <Label Margin="16,5,266,358">Task name</Label>
         <TextBox x:Name="tbName" Margin="99,7,86,358" MaxLength="50">
             <TextBox.Text>
-                <Binding Path="TaskName">
+                <Binding Path="TaskName" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
                         <DataErrorValidationRule />
                     </Binding.ValidationRules>
@@ -38,7 +38,7 @@
         <Label Margin="16,39,230,320">Short description</Label>
         <TextBox x:Name="tbSDesc" Margin="120,38,22,325">
             <TextBox.Text>
-                <Binding Path="ShortDescription">
+                <Binding Path="ShortDescription" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
                         <DataErrorValidationRule />
                     </Binding.ValidationRules>
@@ -48,7 +48,7 @@
         <Label Margin="16,73,230,289">Long description</Label>
         <TextBox x:Name="tbLDesc" Margin="16,106,22,181">
             <TextBox.Text>
-                <Binding Path="LongDescription">
+                <Binding Path="LongDescription" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
                         <DataErrorValidationRule />
                     </Binding.ValidationRules>
@@ -58,7 +58,7 @@
         <Label Margin="16,224,266,139">Start time</Label>
         <DatePicker x:Name="dpSDate" IsDropDownOpen="False" Margin="99,224,120,139" SelectedDate="{x:Static system:DateTime.Now}">
             <DatePicker.DisplayDate>
-                <Binding Path="Start">
+                <Binding Path="Start" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
                         <DataErrorValidationRule />
                     </Binding.ValidationRules>
@@ -79,7 +79,7 @@
         <Label Margin="16,269,266,94">Finish time</Label>
         <DatePicker x:Name="dpFDate" IsDropDownOpen="False" Margin="99,269,120,94" SelectedDate="{x:Static system:DateTime.Now}">
             <DatePicker.DisplayDate>
-                <Binding Path="Finish">
+                <Binding Path="Finish" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
                         <DataErrorValidationRule />
                     </Binding.ValidationRules>
@@ -100,7 +100,7 @@
         <Label Margin="16,317,278,48">Person</Label>
         <TextBox x:Name="tbPerson" Margin="99,317,120,48">
             <TextBox.Text>
-                <Binding Path="BufferResponsible">
+                <Binding Path="BufferResponsible" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
                         <DataErrorValidationRule />
                     </Binding.ValidationRules>

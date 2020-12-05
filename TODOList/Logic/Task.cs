@@ -46,9 +46,10 @@ namespace TODOList.Logic
             TaskStatusColor = TaskStatus;
         }
 
-        public void AddChildren()
+        public void AddChildren(Task child)
         {
-
+            Children.Add(child);
+            GlobalVariables.DrawingTabControl.drawTT.CreateChildTreeViewItem(child.TaskName);
         }
 
         public void DeleteChildren()

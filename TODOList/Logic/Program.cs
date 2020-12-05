@@ -24,9 +24,7 @@ namespace TODOList.Logic
 
     public static class Program
     {
-        // TODO: Init list
         public static List<Project> Prj;
-        //private static Project test;
 
         static Program()
         {
@@ -35,7 +33,6 @@ namespace TODOList.Logic
 
         public static void AddProject()
         {
-            //test = new Project();
             GlobalVariables.BufferPrj = new Project();
             GlobalVariables.BufferPrj.NewProject();
             //Projects.Add(project);

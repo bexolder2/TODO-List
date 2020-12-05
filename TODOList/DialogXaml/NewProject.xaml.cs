@@ -37,7 +37,6 @@ namespace TODOList.DialogXaml
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: Fix real time validation
             MessageBox.Show($"Name saved: {Logic.GlobalVariables.BufferPrj.ProjectName}");
             Dialogs.GetData.EndSave();
             Close();

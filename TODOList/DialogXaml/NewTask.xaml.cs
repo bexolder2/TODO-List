@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using TODOList.Logic;
 
 namespace TODOList.DialogXaml
 {
@@ -21,7 +22,7 @@ namespace TODOList.DialogXaml
         public NewTask()
         {
             InitializeComponent();
-            Logic.GlobalVariables.BufferTask = new Logic.Task();
+            GlobalVariables.BufferTask = new Logic.Task();
 
             dpSDate.DisplayDateStart = DateTime.Now;
             dpFDate.DisplayDateStart = DateTime.Now;
@@ -63,8 +64,9 @@ namespace TODOList.DialogXaml
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             //Logic.Program.Prj.Last();
-            Logic.GlobalVariables.BufferTask = null;
+            GlobalVariables.BufferTask = null;
             Close();
+            GlobalVariables.ChildFlag = false;
         }
     }
 }

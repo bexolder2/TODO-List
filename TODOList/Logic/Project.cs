@@ -28,9 +28,10 @@ namespace TODOList.Logic
             Dialogs.DialogOperations.GetNewProjectData(this);
         } 
 
-        public void DeleteProject()
+        public void DeleteTask(string taskName)
         {
-
+            Root.Remove(Root.Find(x => x.TaskName == taskName));
+            GlobalVariables.DrawingTabControl.DeleteTreeViewItem();
         }
 
         public string this[string columnName]

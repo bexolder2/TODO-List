@@ -11,7 +11,7 @@ namespace TODOList.Drawing
     public class DrawTabControl
     {
         public TabControl tabControl { get; private set; }
-        private DrawTaskTree drawTT;//TODO: maybe dynamic task tree
+        public DrawTaskTree drawTT { get; private set; }//TODO: maybe dynamic task tree
         private Grid TabGrid;
         private DrawContextMenu drawCM;
 
@@ -42,10 +42,10 @@ namespace TODOList.Drawing
             tabItem.Focus();
         }
 
-        public void AddTaskItem(string title)
-        {
-            drawTT.CreateTreeViewItem(title);
-        }
+        //public void AddTaskItem(string title)
+        //{
+        //    drawTT.CreateTreeViewItem(title);
+        //}
 
         public string GetFocusTabItemHeader()
         {
@@ -55,6 +55,11 @@ namespace TODOList.Drawing
         public void DeleteTabItem()
         {
             tabControl.Items.Remove(tabControl.Items[tabControl.SelectedIndex]);
+        }
+
+        public void DeleteTreeViewItem()
+        {
+            drawTT.DeleteTreeViewItem();
         }
     }
 }

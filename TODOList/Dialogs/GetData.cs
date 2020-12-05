@@ -31,11 +31,13 @@ namespace TODOList.Dialogs
 
             if (GlobalVariables.ChildFlag == true)
             {
-
+                SaveChildTaskData(GlobalVariables.DrawingTabControl.drawTT.TreeViewItemHeader);
+                //GlobalVariables.ChildFlag = false;
             }
             else
             {
                 SaveTaskData();
+                GlobalVariables.DrawingTabControl.drawTT.CreateTreeViewItem(GlobalVariables.DrawingTabControl.GetFocusTabItemHeader());
             }
         }
 
@@ -47,11 +49,15 @@ namespace TODOList.Dialogs
 
         public static void SaveChildTaskData(string parent)
         {
-            Program.Prj.Find(x => 
-            x.ProjectName == GlobalVariables.DrawingTabControl.GetFocusTabItemHeader()).Root.Find(x => 
-            x.TaskName == parent).Children.Add(GlobalVariables.BufferTask);
-            //TODO: current project->task treeview items number
-            GlobalVariables.BufferTask = null;
+            if(GlobalVariables.DrawingTabControl.drawTT.TreeViewItemHeader != null)
+            {
+                Program.Prj.Find(x =>
+                                x.ProjectName == GlobalVariables.DrawingTabControl.GetFocusTabItemHeader()).Root.Find(x =>
+                                x.TaskName == parent).AddChildren(GlobalVariables.BufferTask);
+                //TODO: Подзадача подзадачи
+                //TODO: current project->task treeview items number
+                GlobalVariables.BufferTask = null;
+            }
         }
 
         public static void EndSave()

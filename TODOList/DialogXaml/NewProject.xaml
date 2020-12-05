@@ -18,7 +18,7 @@
         <Label Margin="5,-5,10,74" MouseLeftButtonDown="MouseLeftButtonDown_Move">Enter new project name</Label>
         <TextBox x:Name="tbName" MaxLength="20" Margin="10,28,10,46">
             <TextBox.Text>
-                <Binding Path="ProjectName">
+                <Binding Path="ProjectName" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
                         <DataErrorValidationRule />
                     </Binding.ValidationRules>
