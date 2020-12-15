@@ -8,7 +8,7 @@
         xmlns:custom="clr-namespace:TODOList.Logic"
         mc:Ignorable="d"
         x:Name="ntDialog"
-        Title="New Task" Height="390" Width="350">
+        Title="New Task" Height="390" Width="350" ResizeMode="NoResize">
     <Window.Resources>
         <custom:DataConverter x:Key="myDateConverter" />
     </Window.Resources>
@@ -36,7 +36,7 @@
             </TextBox.Style>
         </TextBox>
         <Label Margin="16,39,230,320">Short description</Label>
-        <TextBox x:Name="tbSDesc" Margin="120,38,22,325">
+        <TextBox x:Name="tbSDesc" Margin="120,38,22,325" MaxLength="50">
             <TextBox.Text>
                 <Binding Path="ShortDescription" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
@@ -46,7 +46,7 @@
             </TextBox.Text>
         </TextBox>
         <Label Margin="16,73,230,289">Long description</Label>
-        <TextBox x:Name="tbLDesc" Margin="16,106,22,181">
+        <TextBox x:Name="tbLDesc" Margin="16,106,22,181" MaxLength="150">
             <TextBox.Text>
                 <Binding Path="LongDescription" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
@@ -98,7 +98,7 @@
             </DatePicker.Style>
         </DatePicker>
         <Label Margin="16,317,278,48">Person</Label>
-        <TextBox x:Name="tbPerson" Margin="99,317,120,48">
+        <TextBox x:Name="tbPerson" Margin="99,317,120,48" MaxLength="30">
             <TextBox.Text>
                 <Binding Path="BufferResponsible" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>

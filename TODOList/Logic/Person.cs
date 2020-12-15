@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace TODOList.Logic
 {
+    [Serializable]
     public class Person
     {
         public string Name { get; set; }

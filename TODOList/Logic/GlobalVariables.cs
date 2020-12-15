@@ -16,6 +16,14 @@ namespace TODOList.Logic
 
         public static bool ChildFlag { get; set; }
 
+        public enum Operations
+        {
+            Add,
+            Delete,
+            Edit,
+            FillBuffer
+        };
+
         static GlobalVariables()
         {
             //LevelsCounter = 0;

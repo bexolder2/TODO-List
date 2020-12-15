@@ -18,6 +18,7 @@ namespace TODOList.DialogXaml
     public partial class NewTask : Window
     {
         public event EventHandler SaveNewTask;
+        private GlobalVariables.Operations operation = GlobalVariables.Operations.Add;
 
         public NewTask()
         {
@@ -26,39 +27,57 @@ namespace TODOList.DialogXaml
 
             dpSDate.DisplayDateStart = DateTime.Now;
             dpFDate.DisplayDateStart = DateTime.Now;
-            DataContext = Logic.GlobalVariables.BufferTask;
+            DataContext = GlobalVariables.BufferTask;
+
+            this.Closing += NewTask_Closing;
+        }
+
+        private void NewTask_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            GlobalVariables.DrawingTabControl.drawTT.RefreshTreeView();
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            //if(cbNextTask.IsChecked == true)
-            //{
-            //    if(cbChildTask.IsChecked == true)
-            //    {
-            //        Logic.GlobalVariables.ChildFlag = true;
-            //        Dialogs.GetData.GetTaskData();
-            //        Dialogs.DialogOperations.GetTaskData();
-            //        Close();
-            //    }
-            //    else
-            //    {
-            //        Logic.GlobalVariables.ChildFlag = false;
-            //        Logic.GlobalVariables.BufferTask.Children = null;
-            //        Dialogs.GetData.GetTaskData();
-            //        Dialogs.DialogOperations.GetTaskData();
-            //        Close();
-            //    }
-            //}
-            //else
-            //{
-            //    Dialogs.GetData.GetTaskData();
-            //    Close();
-            //}
-            Dialogs.GetData.GetTaskData();
-            Close();
-            Dialogs.DialogOperations.GetTaskData();
-
-            SaveNewTask?.Invoke(this, null);
+            #region
+            /*if (cbNextTask.IsChecked == true)
+            {
+                if (cbChildTask.IsChecked == true)
+                {
+                    Logic.GlobalVariables.ChildFlag = true;
+                    Dialogs.GetData.GetTaskData();
+                    Dialogs.DialogOperations.GetTaskData();
+                    Close();
+                }
+                else
+                {
+                    Logic.GlobalVariables.ChildFlag = false;
+                    Logic.GlobalVariables.BufferTask.Children = null;
+                    Dialogs.GetData.GetTaskData();
+                    Dialogs.DialogOperations.GetTaskData();
+                    Close();
+                }
+            }
+            else
+            {
+                Dialogs.GetData.GetTaskData();
+                Close();
+            }*/
+            #endregion
+            GlobalVariables.BufferTask.Start = dpSDate.SelectedDate.Value;
+            GlobalVariables.BufferTask.Finish = dpFDate.SelectedDate.Value;
+            if (operation == GlobalVariables.Operations.Edit)
+            {
+                Dialogs.GetData.GetTaskData(operation);
+                Close();
+            }
+            else
+            {
+                Dialogs.GetData.GetTaskData();
+                Close();
+                Dialogs.DialogOperations.GetTaskData();
+                //SaveNewTask?.Invoke(this, null);
+            }    
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
@@ -67,6 +86,13 @@ namespace TODOList.DialogXaml
             GlobalVariables.BufferTask = null;
             Close();
             GlobalVariables.ChildFlag = false;
+        }
+
+        public void EditMode()
+        {
+            operation = GlobalVariables.Operations.Edit;
+            dpSDate.SelectedDate = GlobalVariables.BufferTask.Start;
+            dpFDate.SelectedDate = GlobalVariables.BufferTask.Finish;
         }
     }
 }

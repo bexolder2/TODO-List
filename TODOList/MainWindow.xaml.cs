@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TODOList.Logic;
+using System.IO;
+using Microsoft.Win32;
 
 namespace TODOList
 {
@@ -25,21 +27,30 @@ namespace TODOList
         {
             InitializeComponent();
 
+            this.Closed += MainWindow_Closed;
             GlobalVariables.DrawingTabControl.CreateTabControl(RootGrid, "TabControl1");
             Dialogs.DialogOperations.InitProject += DialogOperations_InitProject;
-            Dialogs.DialogOperations.NewTask += DialogOperations_NewTask;
+            //Dialogs.DialogOperations.NewTask += DialogOperations_NewTask;
         }
 
-        private void DialogOperations_NewTask()
+        private void MainWindow_Closed(object sender, EventArgs e)
         {
-            if (GlobalVariables.newTask != null)
-                GlobalVariables.newTask.SaveNewTask += NewTask_SaveNewTask;
+            foreach (var obj in Program.Prj)
+            {
+                Program.Serialize($"{obj.ProjectName}.dat", obj);
+            }       
         }
 
-        private void NewTask_SaveNewTask(object sender, EventArgs e)
-        {
-            //GlobalVariables.DrawingTabControl.AddTaskItem(Program.Prj.Last().ProjectName); //TODO: current name WTF?? maybe move to NewTask.xaml.cs
-        }
+        //private void DialogOperations_NewTask()
+        //{
+        //    if (GlobalVariables.newTask != null)
+        //        GlobalVariables.newTask.SaveNewTask += NewTask_SaveNewTask;
+        //}
+
+        //private void NewTask_SaveNewTask(object sender, EventArgs e)
+        //{
+        //    //GlobalVariables.DrawingTabControl.AddTaskItem(Program.Prj.Last().ProjectName); //TODO: current name WTF?? maybe move to NewTask.xaml.cs
+        //}
 
         private void DialogOperations_InitProject()
         {
@@ -49,7 +60,7 @@ namespace TODOList
 
         private void NewPr_SaveNewProject(object sender, EventArgs e)
         {
-            GlobalVariables.DrawingTabControl.CreateTabItem(Program.Prj.Last().ProjectName);
+            GlobalVariables.DrawingTabControl.CreateTabItem(Program.Prj.Last().ProjectName, Program.Prj.Last());
             GlobalVariables.BufferPrj = null;
         }
 
@@ -60,12 +71,19 @@ namespace TODOList
 
         private void OpenProject_Click(object sender, RoutedEventArgs e)
         {
-            
-        }
+            string filePath = string.Empty;
+            OpenFileDialog open = new OpenFileDialog();
+            open.Filter = "binary files (*.dat)|*.dat";
+            open.RestoreDirectory = true;
 
-        //public Grid GetMainWindowGrid()
-        //{
-        //    return RootGrid;
-        //}
+            if (open.ShowDialog() == true)
+            {
+                filePath = open.FileName;
+            }
+
+            Program.Deserialize(filePath);
+            NewPr_SaveNewProject(null, null);
+            GlobalVariables.DrawingTabControl.drawTT.RefreshTreeView();
+        }
     }
 }

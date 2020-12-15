@@ -17,14 +17,22 @@ namespace TODOList.Dialogs
             GlobalVariables.newPr = new DialogXaml.NewProject();
             InitProject?.Invoke();
             GlobalVariables.newPr.ShowDialog();
+            GlobalVariables.DrawingTabControl.drawTT.GetTreeViewItemFocus();//TODO: При закрытии без создания ошибка
         }
 
-        public static void GetTaskData()
+        public static void GetTaskData(GlobalVariables.Operations operation = GlobalVariables.Operations.Add)
         {
             GlobalVariables.newTask = null;
             GlobalVariables.newTask = new DialogXaml.NewTask();
-            NewTask?.Invoke();
-            GlobalVariables.newTask.ShowDialog();
+            if (operation == GlobalVariables.Operations.Edit)
+            {
+                GlobalVariables.DrawingTabControl.drawTT.
+                    Search(Program.Prj.Find(x => x.ProjectName == GlobalVariables.DrawingTabControl.GetFocusTabItemHeader()),
+                                                 GlobalVariables.Operations.FillBuffer);
+                GlobalVariables.newTask.EditMode();
+            }    
+            //NewTask?.Invoke();
+            GlobalVariables.newTask.ShowDialog(); 
         }
     }
 }

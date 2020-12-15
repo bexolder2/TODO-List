@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using TODOList.Logic;
 
 namespace TODOList.Drawing
@@ -13,66 +14,128 @@ namespace TODOList.Drawing
     {
         private TreeView treeView;
         private DrawContextMenu drawCM;
-        public string TreeViewItemHeader { get; private set; }
+        public Logic.Task SelectedTask { get; private set; }
 
-        public DrawTaskTree(Grid grid)
+        public DrawTaskTree(Grid grid, Project project)
         {
             treeView = new TreeView();
-            CreateTaskTree(grid);
+            HierarchicalDataTemplate hdt = new HierarchicalDataTemplate();
+            FrameworkElementFactory textBlock = new FrameworkElementFactory(typeof(TextBlock));
+            textBlock.SetBinding(TextBlock.TextProperty, new Binding("TaskName"));
+            hdt.ItemsSource = new Binding("Children");
+            drawCM = new DrawContextMenu();
+            textBlock.SetValue(TextBlock.ContextMenuProperty, drawCM.contextMenuForTasks);
+            hdt.VisualTree = textBlock;
+            treeView.ItemTemplate = hdt;
+            treeView.ItemsSource = project.Root;
+            CreateTaskTree(grid); //TODO:margin
         }
 
         private void CreateTaskTree(Grid grid)//TODO: set size
         {
-            treeView.SelectedItemChanged += TreeView_SelectedItemChanged;
+            //treeView.SelectedItemChanged += TreeView_SelectedItemChanged;
             grid.Children.Add(treeView);
         }
 
-        private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        public void RefreshTreeView()
         {
-            GetTreeViewItemFocus();
-        }
-
-        private void GetTreeViewItemFocus()
-        {
-            if(treeView.SelectedItem != null)
-            {
-                TreeViewItemHeader = (treeView.SelectedItem as TreeViewItem).Header.ToString();
-            }
-        }
-
-        public void CreateTreeViewItem(string projectName)
-        {
-            if(GlobalVariables.ChildFlag == false)
-            {
-                treeView.Items.Clear();
-
-                foreach (var value in Program.Prj.Find(project => project.ProjectName == projectName).Root)
-                {
-                    TreeViewItem tvi = new TreeViewItem();
-                    tvi.Header = value.TaskName;
-                    tvi.Name = value.TaskName;
-                    drawCM = new DrawContextMenu();
-                    tvi.ContextMenu = drawCM.contextMenuForTasks;
-                    treeView.RegisterName(tvi.Name, tvi);
-                    treeView.Items.Add(tvi);
-                }
-            }
-        }
-
-        public void CreateChildTreeViewItem(string childName)
-        {
-            TreeViewItem tviRoot = treeView.FindName(TreeViewItemHeader) as TreeViewItem;
-            TreeViewItem tviChild = new TreeViewItem();
-            tviChild.Header = childName;
-            tviChild.Name = childName;
-            tviChild.ContextMenu = drawCM.contextMenuForTasks;
-            tviRoot.Items.Add(tviChild);
-        }
-
-        public void DeleteTreeViewItem()
-        {
-            treeView.Items.Remove(treeView.FindName(TreeViewItemHeader));
             treeView.Items.Refresh();
+        }
+
+        //private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        //{
+        //    GetTreeViewItemFocus();
+        //}
+
+        public void GetTreeViewItemFocus()
+        {
+            if (treeView.SelectedItem != null)
+            {
+                SelectedTask = (treeView.SelectedItem as Logic.Task);
+            }
+        }
+
+        public void Search(Project project, GlobalVariables.Operations operations)
+        {
+            foreach (var child in project.Root)
+            {
+                if (SelectedTask.Equals(child))
+                {
+                    switch (operations)
+                    {
+                        case GlobalVariables.Operations.Add:
+                            child.AddChildren(GlobalVariables.BufferTask);
+                            break;  
+                        case GlobalVariables.Operations.Delete:
+                            project.Root.Remove(SelectedTask);
+                            break;
+                        case GlobalVariables.Operations.Edit:
+                            EditMode(child);
+                            break;
+                        case GlobalVariables.Operations.FillBuffer:
+                            {
+                                GlobalVariables.BufferTask.TaskName = child.TaskName;
+                                GlobalVariables.BufferTask.ShortDescription = child.ShortDescription;
+                                GlobalVariables.BufferTask.LongDescription = child.LongDescription;
+                                GlobalVariables.BufferTask.Start = child.Start;
+                                GlobalVariables.BufferTask.Finish = child.Finish;
+                                GlobalVariables.BufferTask.BufferResponsible = child.Responsible.Name;
+
+                                GlobalVariables.ChildFlag = false;
+                            }                          
+                            break;
+                    }      
+                    return;
+                }
+                ChildrenSearch(child, operations);
+            }
+        }
+
+        private void ChildrenSearch(Logic.Task child, GlobalVariables.Operations operations)
+        {
+            foreach (var child_ in child.Children)
+            {
+                if (SelectedTask.Equals(child_))
+                {
+                    switch (operations)
+                    {
+                        case GlobalVariables.Operations.Add:
+                            child_.AddChildren(GlobalVariables.BufferTask);
+                            break;
+                        case GlobalVariables.Operations.Delete:
+                            child.DeleteChildren(SelectedTask);
+                            break;
+                        case GlobalVariables.Operations.Edit:
+                            EditMode(child_);
+                            break;
+                        case GlobalVariables.Operations.FillBuffer:
+                            {
+                                GlobalVariables.BufferTask.TaskName = child_.TaskName;
+                                GlobalVariables.BufferTask.ShortDescription = child_.ShortDescription;
+                                GlobalVariables.BufferTask.LongDescription = child_.LongDescription;
+                                GlobalVariables.BufferTask.Start = child_.Start;
+                                GlobalVariables.BufferTask.Finish = child_.Finish;
+                                GlobalVariables.BufferTask.BufferResponsible = child_.Responsible.Name;
+
+                                GlobalVariables.ChildFlag = true;
+                            }
+                            break;
+                    }
+                    return;
+                }
+                ChildrenSearch(child_, operations);
+            }
+        }
+        
+        private void EditMode(Logic.Task task)
+        {
+            task.TaskName = GlobalVariables.BufferTask.TaskName;
+            task.ShortDescription = GlobalVariables.BufferTask.ShortDescription;
+            task.LongDescription = GlobalVariables.BufferTask.LongDescription;
+            task.Start = GlobalVariables.BufferTask.Start;
+            task.Finish = GlobalVariables.BufferTask.Finish;
+            task.Responsible.Name = GlobalVariables.BufferTask.Responsible.Name;
+            //TODO: Resposible list
         }
     }
 }

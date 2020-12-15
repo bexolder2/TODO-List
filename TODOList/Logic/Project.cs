@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace TODOList.Logic
 {
+    [Serializable]
     public class Project : IDataErrorInfo
     {
         public string ProjectName { get; set; }
@@ -28,10 +29,10 @@ namespace TODOList.Logic
             Dialogs.DialogOperations.GetNewProjectData(this);
         } 
 
-        public void DeleteTask(string taskName)
+        public void DeleteTask()
         {
-            Root.Remove(Root.Find(x => x.TaskName == taskName));
-            GlobalVariables.DrawingTabControl.DeleteTreeViewItem();
+            //GlobalVariables.DrawingTabControl.drawTT.SearchForDelete(this);
+            GlobalVariables.DrawingTabControl.drawTT.Search(this, GlobalVariables.Operations.Delete);
         }
 
         public string this[string columnName]
@@ -52,6 +53,5 @@ namespace TODOList.Logic
             }
         }
         public string Error => null;
-        
     }
 }

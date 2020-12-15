@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace TODOList.Logic
 {
+    [Serializable]
     public class Task : IDataErrorInfo
     {
         public string TaskName { get; set; }
@@ -49,12 +50,12 @@ namespace TODOList.Logic
         public void AddChildren(Task child)
         {
             Children.Add(child);
-            GlobalVariables.DrawingTabControl.drawTT.CreateChildTreeViewItem(child.TaskName);
+            //GlobalVariables.DrawingTabControl.drawTT.RefreshTreeView();
         }
 
-        public void DeleteChildren()
+        public void DeleteChildren(Task child)
         {
-
+            Children.Remove(child);
         }
 
         public string this[string columnName]

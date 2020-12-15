@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using TODOList.Logic;
 
 namespace TODOList.Drawing
 {
@@ -29,13 +30,13 @@ namespace TODOList.Drawing
             grid.Children.Add(tabControl);
         }
 
-        public void CreateTabItem(string title)
+        public void CreateTabItem(string title, Project project)
         {
             TabItem tabItem = new TabItem();
             tabItem.Header = title;
             TabGrid = new Grid();
             tabItem.Content = TabGrid;
-            drawTT = new DrawTaskTree(TabGrid);
+            drawTT = new DrawTaskTree(TabGrid, project);
             drawCM = new DrawContextMenu();
             tabItem.ContextMenu = drawCM.contextMenuForTabItems;
             tabControl.Items.Add(tabItem);
@@ -59,7 +60,7 @@ namespace TODOList.Drawing
 
         public void DeleteTreeViewItem()
         {
-            drawTT.DeleteTreeViewItem();
+            //drawTT.DeleteTreeViewItem();
         }
     }
 }

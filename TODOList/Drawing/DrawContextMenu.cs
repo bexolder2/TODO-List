@@ -55,23 +55,29 @@ namespace TODOList.Drawing
 
         private void DeleteTask_Click(object sender, RoutedEventArgs e)
         {
+            GlobalVariables.DrawingTabControl.drawTT.GetTreeViewItemFocus();
             Project tmpPrj = Program.Prj.Find(x => x.ProjectName == GlobalVariables.DrawingTabControl.GetFocusTabItemHeader());
-            tmpPrj.DeleteTask(GlobalVariables.DrawingTabControl.drawTT.TreeViewItemHeader);
+            tmpPrj.DeleteTask();
+            GlobalVariables.DrawingTabControl.drawTT.RefreshTreeView();
         }
 
         private void AddTask_Click(object sender, RoutedEventArgs e)
         {
             GlobalVariables.ChildFlag = true;
+            GlobalVariables.DrawingTabControl.drawTT.GetTreeViewItemFocus();
             Dialogs.DialogOperations.GetTaskData();
         }
 
         private void EditTask_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Edit task");
+            GlobalVariables.DrawingTabControl.drawTT.GetTreeViewItemFocus();
+            Dialogs.DialogOperations.GetTaskData(GlobalVariables.Operations.Edit);
         }
 
         private void AddRootTask_Click(object sender, RoutedEventArgs e)
         {
+            GlobalVariables.ChildFlag = false;
+            GlobalVariables.DrawingTabControl.drawTT.GetTreeViewItemFocus();
             Dialogs.DialogOperations.GetTaskData();
         }
 
