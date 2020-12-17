@@ -28,7 +28,14 @@ namespace TODOList.Drawing
             hdt.VisualTree = textBlock;
             treeView.ItemTemplate = hdt;
             treeView.ItemsSource = project.Root;
-            CreateTaskTree(grid); //TODO:margin
+           
+            Thickness margin = treeView.Margin;
+            margin.Top = 10;
+            margin.Right = 1000;
+            margin.Bottom = 10;
+            treeView.Margin = margin;
+
+            CreateTaskTree(grid);
         }
 
         private void CreateTaskTree(Grid grid)//TODO: set size
