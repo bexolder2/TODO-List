@@ -10,7 +10,7 @@ namespace TODOList.Dialogs
     public static class DialogOperations
     {
         public static event Action InitProject;
-        public static event Action NewTask;
+        //public static event Action NewTask;
         public static void GetNewProjectData(Project project)
         {
             GlobalVariables.newPr = null;

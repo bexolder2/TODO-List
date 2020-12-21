@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TODOList"
         mc:Ignorable="d"
-        Title="TODO List" Height="600" Width="1200">
+        Title="TODO List" Height="600" Width="1200" ResizeMode="NoResize">
     <Grid x:Name="RootGrid">
         <Menu Height="20" VerticalAlignment="Top" Background="Aqua">
             <MenuItem Header="New Project" Click="NewProject_Click"></MenuItem>

@@ -17,7 +17,7 @@ namespace TODOList.DialogXaml
 {
     public partial class NewTask : Window
     {
-        public event EventHandler SaveNewTask;
+        //public event EventHandler SaveNewTask;
         private GlobalVariables.Operations operation = GlobalVariables.Operations.Add;
 
         public NewTask()
@@ -39,7 +39,7 @@ namespace TODOList.DialogXaml
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            #region
+            #region old
             /*if (cbNextTask.IsChecked == true)
             {
                 if (cbChildTask.IsChecked == true)
@@ -66,6 +66,7 @@ namespace TODOList.DialogXaml
             #endregion
             GlobalVariables.BufferTask.Start = dpSDate.SelectedDate.Value;
             GlobalVariables.BufferTask.Finish = dpFDate.SelectedDate.Value;
+            GlobalVariables.BufferTask.SetStatus(Status.Start);
             if (operation == GlobalVariables.Operations.Edit)
             {
                 Dialogs.GetData.GetTaskData(operation);
@@ -82,7 +83,6 @@ namespace TODOList.DialogXaml
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            //Logic.Program.Prj.Last();
             GlobalVariables.BufferTask = null;
             Close();
             GlobalVariables.ChildFlag = false;

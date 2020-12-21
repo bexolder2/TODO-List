@@ -84,6 +84,7 @@
     <Compile Include="Dialogs\GetData.cs" />
     <Compile Include="Drawing\DrawTabControl.cs" />
     <Compile Include="Drawing\DrawTaskTree.cs" />
+    <Compile Include="Drawing\Navigation\Canvases.cs" />
     <Compile Include="Drawing\Navigation\Frames.cs" />
     <Compile Include="Drawing\Navigation\Navigator.cs" />
     <Compile Include="Drawing\Navigation\Pages.cs" />

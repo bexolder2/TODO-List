@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 //using Newtonsoft.Json;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Windows.Media;
 
 namespace TODOList.Logic
 {
@@ -21,7 +22,8 @@ namespace TODOList.Logic
         Green,
         Gray,
         Yellow,
-        Red
+        Red,
+        White
     }
 
     [Serializable]
@@ -64,7 +66,7 @@ namespace TODOList.Logic
         public static void Deserialize(string fileName)
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            using (FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate))
+            using (FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate)) //TODO: открыть -> отмена; пофиксить вылет
             {
                 Prj.Add((Project)formatter.Deserialize(fs));
             }

@@ -41,7 +41,7 @@ namespace TODOList.Dialogs
             }
         }
 
-        public static void SaveTaskData(GlobalVariables.Operations operation = GlobalVariables.Operations.Add)//TODO: ENUM
+        public static void SaveTaskData(GlobalVariables.Operations operation = GlobalVariables.Operations.Add)
         {
             if(operation == GlobalVariables.Operations.Edit)
             {

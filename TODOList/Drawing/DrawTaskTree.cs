@@ -38,9 +38,8 @@ namespace TODOList.Drawing
             CreateTaskTree(grid);
         }
 
-        private void CreateTaskTree(Grid grid)//TODO: set size
+        private void CreateTaskTree(Grid grid)
         {
-            //treeView.SelectedItemChanged += TreeView_SelectedItemChanged;
             grid.Children.Add(treeView);
         }
 
@@ -48,11 +47,6 @@ namespace TODOList.Drawing
         {
             treeView.Items.Refresh();
         }
-
-        //private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        //{
-        //    GetTreeViewItemFocus();
-        //}
 
         public void GetTreeViewItemFocus()
         {
@@ -142,7 +136,12 @@ namespace TODOList.Drawing
             task.Start = GlobalVariables.BufferTask.Start;
             task.Finish = GlobalVariables.BufferTask.Finish;
             task.Responsible.Name = GlobalVariables.BufferTask.Responsible.Name;
-            //TODO: Resposible list
+            task.SetStatus(Status.Start);
+
+            foreach(var resp in GlobalVariables.BufferTask.Responsible.AvailableTasks)
+            {
+                task.Responsible.AvailableTasks.Add(resp);
+            }
         }
     }
 }

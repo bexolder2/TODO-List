@@ -17,8 +17,8 @@ namespace TODOList.Logic
         public DateTime Finish { get; set; }
         public Person Responsible { get; set; }
         public string BufferResponsible { get; set; } //TODO:buff -> Responsible.Name
-        public int TaskStatus { get; set; }
-        public int TaskStatusColor { get; set; }
+        public Status TaskStatus { get; private set; }
+        public StatusColor TaskStatusColor { get; private set; }
         public List<Task> Children { get; set; }
 
         public Task()
@@ -43,8 +43,14 @@ namespace TODOList.Logic
 
         public void SetStatus(Status status)
         {
-            TaskStatus = (int)status;
-            TaskStatusColor = TaskStatus;
+            //TaskStatus = (int)status;
+            //TaskStatusColor = TaskStatus;
+            TaskStatus = status;
+            foreach (StatusColor s in Enum.GetValues(typeof(StatusColor)))
+            {
+                if ((int)s == (int)status)
+                    TaskStatusColor = s;
+            }
         }
 
         public void AddChildren(Task child)
@@ -66,7 +72,7 @@ namespace TODOList.Logic
                 switch (columnName)
                 {
                     case "TaskName":
-                        if(TaskName == null)//TODO:check spases
+                        if(string.IsNullOrWhiteSpace(TaskName))
                         {
                             error = "Enter correct name.";
                         }

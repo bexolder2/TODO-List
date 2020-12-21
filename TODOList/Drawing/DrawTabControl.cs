@@ -12,7 +12,7 @@ namespace TODOList.Drawing
     public class DrawTabControl
     {
         public TabControl tabControl { get; private set; }
-        public DrawTaskTree drawTT { get; private set; }//TODO: maybe dynamic task tree
+        public DrawTaskTree drawTT { get; private set; }
         public Navigation.Navigator nv { get; private set; }
         private Grid TabGrid;
         private DrawContextMenu drawCM;
@@ -58,11 +58,13 @@ namespace TODOList.Drawing
             drawTT = new DrawTaskTree(TabGrid, project);
             nv = new Navigation.Navigator(TabGrid);
 
-            for(int i = 1; i <= 12; i++)
-            {
-                nv.AddPage(i); //================================================================
-            }
-            
+            //for(int i = 1; i <= 12; i++)//test
+            //{
+            //    nv.AddPage(i);
+            //}
+            //nv.pages_[0].NewTask(Program.Prj.Last().Root.Last()); //===============
+
+
             drawCM = new DrawContextMenu();
             CreateButtons();
             SetLabelProperties();
@@ -100,6 +102,7 @@ namespace TODOList.Drawing
             Button bNext = new Button();
             Button bShow = new Button();
 
+            #region margins
             bBack.Content = "<";
             bNext.Content = ">";
             bShow.Content = "Show diagram";
@@ -127,14 +130,36 @@ namespace TODOList.Drawing
             margin3.Right = 800;
             margin3.Bottom = 10;
             bShow.Margin = margin3;
+            #endregion
+
+            bBack.IsEnabled = false;
+            bNext.IsEnabled = false;
 
             bBack.Click += (object sender, RoutedEventArgs e) =>
             {
                 if (nv.CurrentPage - 1 >= 0)
                 {
-                    nv.frame_.frame.Navigate(nv.pages_[nv.CurrentPage - 1].page);
-                    nv.CurrentPage--;
-                    SetLabelText();
+                    Back();     
+                }
+                else
+                {
+                    nv.CurrentPage = 12;
+                    IncOrDecDate(-1);
+                    if (nv.CurrentYear >= 0)
+                    {
+                        Back();
+                    }
+                    else
+                    {
+                        IncOrDecDate(2);
+                        if (nv.pages_.Count >= nv.CurrentYear)
+                            Back();
+                        else
+                        {
+                            IncOrDecDate(-2);
+                            Back();
+                        }
+                    }
                 }
             };
 
@@ -142,19 +167,42 @@ namespace TODOList.Drawing
             {
                 if (nv.pages_.Count != 0)
                 {
-                    if (nv.pages_.Count > nv.CurrentPage + 1)
+                    if (nv.pages_[nv.CurrentYear].Count > nv.CurrentPage + 1) //если месяцы НЕ закончились
                     {
-                        nv.frame_.frame.Navigate(nv.pages_[nv.CurrentPage + 1].page);
-                        nv.CurrentPage++;
-                        SetLabelText();
+                        Next();
+                    }
+                    else //Если месяцы ЗАКОНЧИЛИСЬ
+                    {
+                        if (nv.pages_.Count > nv.CurrentYear + 1) //Если есть год ВПЕРЕДИ
+                        {
+                            nv.CurrentPage = -1;
+                            IncOrDecDate(1);
+                            Next();
+                        }
+                        else if (nv.pages_.Count > nv.CurrentYear - 1) //Если есть год ПОЗАДИ
+                        {
+                            nv.CurrentPage = -1;
+                            IncOrDecDate(-1);
+                            Next();
+                        }
+                        else //Если год ЕДИНСТВЕННЫЙ
+                        {
+                            nv.CurrentPage = -1;
+                            Next();
+                        }
                     }
                 }
             };
 
             bShow.Click += (object sender, RoutedEventArgs e) =>
             {
+                bBack.IsEnabled = true;
+                bNext.IsEnabled = true;
+                nv.frame_.ConvertToList(Program.Prj.Find(x => x.ProjectName == GetFocusTabItemHeader()));
+                nv.frame_.CheckYears();
+                nv.AddPages(nv.frame_);
                 if (nv.pages_.Count != 0)
-                    nv.frame_.frame.Navigate(nv.pages_[0].page);
+                    nv.frame_.frame.Navigate(nv.pages_[0][0].page);
                 SetLabelText();
             };
 
@@ -163,13 +211,33 @@ namespace TODOList.Drawing
             TabGrid.Children.Add(bShow);
         }
 
+        private void IncOrDecDate(int inc)
+        {
+            nv.CurrentYear += inc;
+            nv.Year = nv.Year.AddYears(inc);
+        }
+
+        private void Back()
+        {
+            nv.frame_.frame.Navigate(nv.pages_[nv.CurrentYear][nv.CurrentPage - 1].page);
+            nv.CurrentPage--;
+            SetLabelText();
+        }
+
+        private void Next()
+        {
+            nv.frame_.frame.Navigate(nv.pages_[nv.CurrentYear][nv.CurrentPage + 1].page);
+            nv.CurrentPage++;
+            SetLabelText();
+        }
+
         private void SetLabelText()
         {
             foreach (Month m in Enum.GetValues(typeof(Month)))
             {
                 if ((int)m == nv.CurrentPage)
                 {
-                    lMonth.Content = m;
+                    lMonth.Content = $"{m} {nv.Year.Year}";
                 }
             }
         }

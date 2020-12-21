@@ -6,16 +6,20 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using TODOList.Logic;
 
 namespace TODOList.Drawing.Navigation
 {
     public class Frames
     {
         public Frame frame { get; private set; }
+        public List<Logic.Task> TasksWithoutTree { get; private set; }
+        public int NumberOfYears { get; private set; }
 
         public Frames()
         {
             frame = new Frame();
+            TasksWithoutTree = new List<Logic.Task>();
         }
 
         public void CreateFrame(Grid grid)
@@ -30,6 +34,53 @@ namespace TODOList.Drawing.Navigation
             frame.Margin = margin;
 
             grid.Children.Add(frame);
+        }
+
+        #region convert
+        public void ConvertToList(Project project)
+        {
+            foreach (var child in project.Root)
+            {
+                if (child.Children == null)
+                {
+                    TasksWithoutTree.Add(child);
+                }
+                else
+                {
+                    TasksWithoutTree.Add(child);
+                    ConvertToListChild(child);
+                }
+            }
+        }
+
+        private void ConvertToListChild(Logic.Task child)
+        {
+            foreach (var child_ in child.Children)
+            {
+                if (child_.Children == null)
+                {
+                    TasksWithoutTree.Add(child_);
+                }
+                else
+                {
+                    TasksWithoutTree.Add(child_);
+                    ConvertToListChild(child_);
+                }
+            }
+        }
+        #endregion
+
+        public void CheckYears()
+        {
+            List<int> tmpYear = new List<int>();
+            foreach(var task in TasksWithoutTree)
+            {
+                if (tmpYear.Find(x => x == task.Finish.Year) == 0)
+                {
+                    ++NumberOfYears;
+                    tmpYear.Add(task.Finish.Year);
+                }     
+            }
         }
     }
 }
