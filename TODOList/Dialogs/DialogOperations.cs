@@ -17,7 +17,8 @@ namespace TODOList.Dialogs
             GlobalVariables.newPr = new DialogXaml.NewProject();
             InitProject?.Invoke();
             GlobalVariables.newPr.ShowDialog();
-            GlobalVariables.DrawingTabControl.drawTT.GetTreeViewItemFocus();//TODO: При закрытии без создания ошибка
+            if(GlobalVariables.newPr.DialogResult == true)
+                GlobalVariables.DrawingTabControl.drawTT.GetTreeViewItemFocus();
         }
 
         public static void GetTaskData(GlobalVariables.Operations operation = GlobalVariables.Operations.Add)

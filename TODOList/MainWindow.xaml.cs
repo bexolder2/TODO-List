@@ -4,23 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TODOList.Logic;
 using System.IO;
 using Microsoft.Win32;
 
 namespace TODOList
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -81,9 +70,11 @@ namespace TODOList
                 filePath = open.FileName;
             }
 
-            Program.Deserialize(filePath);
-            NewPr_SaveNewProject(null, null);
-            GlobalVariables.DrawingTabControl.drawTT.RefreshTreeView();
+            if (Program.Deserialize(filePath))
+            {
+                NewPr_SaveNewProject(null, null);
+                GlobalVariables.DrawingTabControl.drawTT.RefreshTreeView();
+            }     
         }
     }
 }

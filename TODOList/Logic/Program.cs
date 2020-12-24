@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-//using Newtonsoft.Json;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Media;
 
@@ -52,10 +51,6 @@ namespace TODOList.Logic
 
         public static void Serialize(string fileName, Project source)
         {
-            //using (var file = new StreamWriter(fileName))
-            //{
-            //    file.WriteLine(JsonConvert.SerializeObject(source));
-            //}
             BinaryFormatter formatter = new BinaryFormatter();
             using (FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate))
             {
@@ -63,13 +58,19 @@ namespace TODOList.Logic
             }
         }
 
-        public static void Deserialize(string fileName)
+        public static bool Deserialize(string fileName)
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            using (FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate)) //TODO: открыть -> отмена; пофиксить вылет
+            if (!string.IsNullOrEmpty(fileName))
             {
-                Prj.Add((Project)formatter.Deserialize(fs));
+                using (FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate))
+                {
+                    Prj.Add((Project)formatter.Deserialize(fs));
+                }
+                return true;
             }
+            else
+                return false;
         }
     }
 }

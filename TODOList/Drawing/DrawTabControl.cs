@@ -58,13 +58,6 @@ namespace TODOList.Drawing
             drawTT = new DrawTaskTree(TabGrid, project);
             nv = new Navigation.Navigator(TabGrid);
 
-            //for(int i = 1; i <= 12; i++)//test
-            //{
-            //    nv.AddPage(i);
-            //}
-            //nv.pages_[0].NewTask(Program.Prj.Last().Root.Last()); //===============
-
-
             drawCM = new DrawContextMenu();
             CreateButtons();
             SetLabelProperties();
@@ -137,28 +130,24 @@ namespace TODOList.Drawing
 
             bBack.Click += (object sender, RoutedEventArgs e) =>
             {
-                if (nv.CurrentPage - 1 >= 0)
+                if (nv.CurrentPage - 1 >= 0) //если месяцы НЕ закончились
                 {
                     Back();     
                 }
-                else
+                else //Если месяцы ЗАКОНЧИЛИСЬ
                 {
-                    nv.CurrentPage = 12;
-                    IncOrDecDate(-1);
-                    if (nv.CurrentYear >= 0)
+                    
+                    if (nv.CurrentYear - 1 >= 0) //Если ЕСТЬ год позади 
                     {
+                        nv.CurrentPage = 12;
+                        IncOrDecDate(-1);
                         Back();
                     }
-                    else
+                    else //Если НЕТ года позади 
                     {
-                        IncOrDecDate(2);
-                        if (nv.pages_.Count >= nv.CurrentYear)
-                            Back();
-                        else
-                        {
-                            IncOrDecDate(-2);
-                            Back();
-                        }
+                        IncOrDecDate(nv.pages_.Count - 1);
+                        nv.CurrentPage = 12;
+                        Back();
                     }
                 }
             };
@@ -169,7 +158,7 @@ namespace TODOList.Drawing
                 {
                     if (nv.pages_[nv.CurrentYear].Count > nv.CurrentPage + 1) //если месяцы НЕ закончились
                     {
-                        Next();
+                        Next();               
                     }
                     else //Если месяцы ЗАКОНЧИЛИСЬ
                     {
@@ -179,7 +168,7 @@ namespace TODOList.Drawing
                             IncOrDecDate(1);
                             Next();
                         }
-                        else if (nv.pages_.Count > nv.CurrentYear - 1) //Если есть год ПОЗАДИ
+                        else if (nv.CurrentYear - 1 >= 0) //Если есть год ПОЗАДИ
                         {
                             nv.CurrentPage = -1;
                             IncOrDecDate(-1);
@@ -194,10 +183,11 @@ namespace TODOList.Drawing
                 }
             };
 
-            bShow.Click += (object sender, RoutedEventArgs e) =>
+            bShow.Click += (object sender, RoutedEventArgs e) => //TODO: Fix multitask
             {
                 bBack.IsEnabled = true;
                 bNext.IsEnabled = true;
+                nv.frame_.RefreshTaskList();
                 nv.frame_.ConvertToList(Program.Prj.Find(x => x.ProjectName == GetFocusTabItemHeader()));
                 nv.frame_.CheckYears();
                 nv.AddPages(nv.frame_);
@@ -219,15 +209,28 @@ namespace TODOList.Drawing
 
         private void Back()
         {
+            //
+            nv.pages_[nv.CurrentYear][nv.CurrentPage - 1].canvas.UpdateRectangles(Program.Prj.Find(x => x.ProjectName == GetFocusTabItemHeader()), nv.pages_[nv.CurrentYear][nv.CurrentPage - 1], nv.CurrentYear, nv.CurrentPage - 1);
+            //
             nv.frame_.frame.Navigate(nv.pages_[nv.CurrentYear][nv.CurrentPage - 1].page);
-            nv.CurrentPage--;
+            --nv.CurrentPage;
             SetLabelText();
         }
 
         private void Next()
         {
+            //
+            if (nv.CurrentPage < 0)
+            {
+                nv.pages_[nv.CurrentYear][nv.CurrentPage + 1].canvas.UpdateRectangles(Program.Prj.Find(x => x.ProjectName == GetFocusTabItemHeader()), nv.pages_[nv.CurrentYear][nv.CurrentPage + 1], nv.CurrentYear, nv.CurrentPage + 1);//+2
+            }
+            else
+            {
+                nv.pages_[nv.CurrentYear][nv.CurrentPage + 1].canvas.UpdateRectangles(Program.Prj.Find(x => x.ProjectName == GetFocusTabItemHeader()), nv.pages_[nv.CurrentYear][nv.CurrentPage + 1], nv.CurrentYear, nv.CurrentPage + 1);
+            }    
+            //
             nv.frame_.frame.Navigate(nv.pages_[nv.CurrentYear][nv.CurrentPage + 1].page);
-            nv.CurrentPage++;
+            ++nv.CurrentPage;
             SetLabelText();
         }
 

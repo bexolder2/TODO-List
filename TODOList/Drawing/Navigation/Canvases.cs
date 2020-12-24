@@ -12,13 +12,13 @@ namespace TODOList.Drawing.Navigation
     {
         private List<SolidColorBrush> _Brushes;
 
-        public ScrollViewer _Scroll { get; private set; }
+        public ScrollViewer _Scroll { get;  set; }//private
         public Canvas _Canvas { get; private set; }
 
         public List<TextBlock> _TextBlocks { get; private set; }
         public List<TextBlock> _TasksTextBlocks { get; private set; }
         public List<Line> _Lines { get; private set; }
-        public List<Rectangle> _Rectangles { get; private set; }
+        public List<List<List<Rectangle>>> _Rectangles { get;  set; } //private
         public List<CheckBox> _CheckBoxesPerf { get; private set; }
         public List<CheckBox> _CheckBoxesPause { get; private set; }
 
@@ -28,14 +28,14 @@ namespace TODOList.Drawing.Navigation
             Pause
         };
 
-        private int YForLines = 45;
+        private int YForLines = 50;
         private int XForName = 10;
         private int XForCbPerf = 200;
         private int XForCbPause = 250;
         private int StartXForRectangles;
-       
+        private int RectCounter;  
 
-        public Canvases(int year, int month)
+        public Canvases(Frames fr, int year, int month)
         {
             _Brushes = new List<SolidColorBrush>();
             InitializeBrushes();
@@ -44,21 +44,36 @@ namespace TODOList.Drawing.Navigation
 
             _TextBlocks = new List<TextBlock>();
             _Lines = new List<Line>();
-            _Rectangles = new List<Rectangle>();
+            _Rectangles = new List<List<List<Rectangle>>>();
+
             _CheckBoxesPerf = new List<CheckBox>();
             _CheckBoxesPause = new List<CheckBox>();
             _TasksTextBlocks = new List<TextBlock>();
 
             Markup(year, month);
+            InitializeRectList(fr);
         }
 
-        public void AddLine(Logic.Task task)
+        public void AddLine(Logic.Task task, int year, int month)
         {
-            CreateCheckBoxes(CheckBoxType.Performed, task.TaskName);
-            CreateCheckBoxes(CheckBoxType.Pause, task.TaskName);
+            CreateCheckBoxes(CheckBoxType.Performed, task);
+            CreateCheckBoxes(CheckBoxType.Pause, task);
             CreateHorizontalLine(0, (int)_Canvas.Width, YForLines);
             CreateTextBlock(task.TaskName);
-            //CreateRectangle(, task.TaskStatusColor, task.TaskName);
+            RectCounter = CountNumberOfRect(task);
+            InitializeRectangle(task);
+            AddRectOnCurrentPage(year, month - 1, task.TaskName);
+
+            IncYForLines();
+        }
+
+        public void ExpandCanvasHeight()
+        {
+            _Canvas.Height *= 2;
+        }
+
+        private void IncYForLines()
+        {
             if (_Canvas.Height > YForLines)
                 YForLines += 25;
             else
@@ -66,11 +81,6 @@ namespace TODOList.Drawing.Navigation
                 ExpandCanvasHeight();
                 YForLines += 25;
             }
-        }
-
-        public void ExpandCanvasHeight()
-        {
-            _Canvas.Height *= 2;
         }
 
         private void InitializeBrushes()
@@ -101,7 +111,7 @@ namespace TODOList.Drawing.Navigation
             int MarginTopForFirstLine = 10;
             int MarginBottomForFirstLine = (int)_Canvas.Height - 20;
 
-            _Canvas.Background = Brushes.Beige; //TODO:choose color
+            _Canvas.Background = Brushes.Beige;
 
             CreateTextBlocks(counter, MarginTopForFirstLine, MarginBottomForFirstLine);
             CreateVerticalLines(counter, _TextBlocks[1], _TextBlocks[2]);
@@ -141,7 +151,7 @@ namespace TODOList.Drawing.Navigation
             _TextBlocks.Add(tb3);
 
             int MarginLeft = (int)tb3.Margin.Left + 50;
-            StartXForRectangles = MarginLeft;
+            //StartXForRectangles = MarginLeft;
             int MarginRight = (int)_Canvas.Width - MarginLeft - 20;
             for (int i = 0; i < counter; i++)
             {
@@ -174,7 +184,8 @@ namespace TODOList.Drawing.Navigation
             _Lines.Add(line2);
 
             int XForLine = (int)tb3.Margin.Left + 40;
-            for (int i = 0; i < counter; i++)
+            StartXForRectangles = XForLine;
+            for (int i = 0; i <= counter; i++)
             {
                 Line line = new Line();
                 line.Stroke = Brushes.Black;
@@ -195,27 +206,45 @@ namespace TODOList.Drawing.Navigation
             #endregion
         }
 
-        private void CreateCheckBoxes(CheckBoxType cbt, string Name)
+        private void CreateCheckBoxes(CheckBoxType cbt, Logic.Task task)
         {
             CheckBox cb = new CheckBox();
             cb.IsChecked = false;
-            cb.Name = SetControlName<CheckBox>(cb, Name);
-
+            cb.Name = SetControlName<CheckBox>(cb, task.TaskName);
+            
             switch (cbt)
             {
                 case CheckBoxType.Performed:
-                    cb.Checked += (object sender, RoutedEventArgs e) =>
+                    cb.Click += (object sender, RoutedEventArgs e) =>
                     {
-                        //FillRectangle(_Rectangles.Find(x => x.Name == Name.Trim(trimSymbol)), StatusColor.Gray);
-                    };
+                        if (cb.IsChecked == true)
+                        {
+                            SearchRectForFill(StatusColor.Gray, task.TaskName);
+                            task.SetStatus(Status.Finish);
+                        }
+                        else
+                        {
+                            SearchRectForFill(StatusColor.Green, task.TaskName);
+                            task.SetStatus(Status.Start);
+                        }
+                    };                 
                     SetCheckBoxMargin(cb, XForCbPerf, YForLines - 17);
                     _CheckBoxesPerf.Add(cb);
                     _Canvas.Children.Add(cb);
                     break;
                 case CheckBoxType.Pause:
-                    cb.Checked += (object sender, RoutedEventArgs e) =>
+                    cb.Click += (object sender, RoutedEventArgs e) =>
                     {
-                        //FillRectangle(_Rectangles.Find(x => x.Name == Name.Trim(trimSymbol)), StatusColor.Yellow);
+                        if (cb.IsChecked == true)
+                        {
+                            SearchRectForFill(StatusColor.Yellow, task.TaskName);
+                            task.SetStatus(Status.Stopped);
+                        }
+                        else
+                        {
+                            SearchRectForFill(StatusColor.Green, task.TaskName);
+                            task.SetStatus(Status.Start);
+                        }
                     };
                     SetCheckBoxMargin(cb, XForCbPause, YForLines - 17);
                     _CheckBoxesPause.Add(cb);
@@ -224,11 +253,27 @@ namespace TODOList.Drawing.Navigation
             }
         }
 
+        private void SearchRectForFill(StatusColor color, string Name)
+        {
+            char trimSymbol = ' ';
+            for (int i = 0; i < _Rectangles.Count; ++i)
+            {
+                foreach (var rt in _Rectangles)
+                {
+                    for (int j = 0; j < rt.Count; ++j)
+                    {
+                        if (rt[j].Count > 0)
+                            FillRectangle(rt[j].Find(x => x.Name == Name.Trim(trimSymbol)), color);
+                    }
+                }
+            }
+        }
+
         private void CreateTextBlock(string text)
         {
             TextBlock tb = new TextBlock();
             tb.Text = text;
-            tb.Margin = SetMargin<TextBlock>(tb, XForName, YForLines - 18, 0, 0);// 3:(int)_Canvas.Width - XForCbPerf; 4:(int)_Canvas.Height - YForLines - 25
+            tb.Margin = SetMargin<TextBlock>(tb, XForName, YForLines - 18, 0, 0);
             char trimSymbol = ' ';
             tb.Name = text.Trim(trimSymbol);
             _TasksTextBlocks.Add(tb);
@@ -270,24 +315,115 @@ namespace TODOList.Drawing.Navigation
         {
             char trimSymbol = ' ';
             var _control = control as T;
-            return text.Trim(trimSymbol);
+            if(Char.IsNumber(text, 0))
+            {
+                MessageBox.Show("Incorrect task name!");
+                return string.Empty;
+            }
+            else
+            {
+                return text.Trim(trimSymbol);
+            }      
         }
 
-        private void CreateRectangle(List<Pages> pages, int numberOfRectangles, StatusColor color, string Name, int LeftMargin, int TopMargin)
+        private void InitializeRectList(Frames fr)
         {
-            Rectangle rect = new Rectangle();
-            FillRectangle(rect, color);
-            rect.Name = SetControlName<Rectangle>(rect, Name);
-            rect.Height = 20;
-            SetMargin<Rectangle>(rect, LeftMargin, TopMargin, 0, 0);
+            int year = DateTime.Now.Year;
 
-            _Rectangles.Add(rect);
-            //TODO:set size
+            for (int i = 0; i <= fr.NumberOfYears; i++) //-1
+            {
+                List<List<Rectangle>> RYear = new List<List<Rectangle>>();//year
+                for (int j = 0; j < 12; j++)
+                {
+                    List<Rectangle> RMonth = new List<Rectangle>();//month
+                    RYear.Add(RMonth);
+                }
+                _Rectangles.Add(RYear);
+                ++year;
+            }  
+        }
+
+        private void AddRectOnCurrentPage(int year, int month, string RectName)//TODO: fix crash
+        {
+            if(_Rectangles[year][month].Count != 0)
+                _Canvas.Children.Add(_Rectangles[year][month].Find(x => x.Name == RectName));
+        }
+
+        private void InitializeRectangle(Logic.Task task)
+        {
+            int CurrentYear = task.Start.Year - DateTime.Now.Year;
+            int CurrentMonth = task.Start.Month;
+            int DaysRectangleCounter = 0;
+            int Width = 0;
+            int tmpLeft;
+            DateTime tmpMonth = task.Start;
+            DateTime tmpYear = task.Start;
+
+            for (int i = 0; i <= RectCounter; ++i) //=
+            {
+                Rectangle rect = new Rectangle();
+                
+                if ((tmpMonth.Day + DaysRectangleCounter) < DateTime.DaysInMonth(tmpYear.Year, CurrentMonth)) //Если НЕТ выхода за пределы месяца
+                {
+                    ++DaysRectangleCounter;
+                }
+                else
+                {
+                    Width = (DaysRectangleCounter + 1) * 30;
+                    tmpLeft = tmpMonth.Day - 1;
+                    CreateRectangle(rect, task, Width, tmpLeft, CurrentYear, CurrentMonth - 1);
+
+                    if (CurrentMonth + 1 <= 12) //Если НЕТ выхода за пределы года ..=
+                    {
+                        ++CurrentMonth;
+                        tmpMonth = new DateTime(tmpYear.Year, CurrentMonth, 1);
+                        DaysRectangleCounter = 0;
+                    }
+                    else
+                    {
+                        if(CurrentYear + 1 < _Rectangles.Count)
+                        {
+                            ++CurrentYear;
+                            CurrentMonth = 1;
+                            tmpYear = tmpYear.AddYears(1);
+                            tmpMonth = new DateTime(tmpYear.Year, 1, 1);        
+                            DaysRectangleCounter = 0;
+                        }
+                    }
+
+                }
+            }
+            Rectangle rect2 = new Rectangle();
+            if (DaysRectangleCounter == 0)
+                Width = 30;
+            else
+                Width = (DaysRectangleCounter) * 30;
+            int tmpLeft2 = tmpMonth.Day - 1;
+            CreateRectangle(rect2, task, Width, tmpLeft2, CurrentYear, CurrentMonth - 1);
+        }
+
+        private void CreateRectangle(Rectangle rect, Logic.Task task, int Width, int Left, int CurrentYear, int CurrentMonth)
+        {
+            FillRectangle(rect, task.TaskStatusColor);
+            rect.Name = SetControlName<Rectangle>(rect, task.TaskName);
+            rect.Height = 25;
+            rect.Width = Width;
+            int LeftMargin = StartXForRectangles + Left * 30;
+            int TopMargin = (int)_TasksTextBlocks.Find(x => x.Name == task.TaskName).Margin.Top - 7;
+            rect.Margin =  SetMargin<Rectangle>(rect, LeftMargin, TopMargin, 0, 0); 
+            _Rectangles[CurrentYear][CurrentMonth].Add(rect);
         }
 
         private int CountNumberOfRect(Logic.Task task)
         {
-            return (task.Finish - task.Start).Days;
+            if((task.Finish - task.Start).Days == 0)
+            {
+                return 1;
+            }
+            else
+            {
+                return (task.Finish - task.Start).Days;
+            }
         }
 
         private void FillRectangle(Rectangle rect, StatusColor color)
@@ -311,6 +447,46 @@ namespace TODOList.Drawing.Navigation
                     break;
             }
         }
-        //TODO: Search for checkboxes events (Search current task)
+        
+        public void UpdateRectangles(Project project, Pages page, int year, int month)
+        {
+            foreach(var child in project.Root)
+            {
+                if (child.Children.Count == 0)
+                {
+                    SearchAndFill(page, year, month, child);
+                }
+                else
+                {
+                    SearchAndFill(page, year, month, child);
+                    SubSearch(child, page, year, month);
+                }
+            }
+        }
+
+        private void SubSearch(Logic.Task child, Pages page, int year, int month)
+        {
+            foreach (var child_ in child.Children)
+            {
+                if (child_.Children.Count == 0)
+                {
+                    SearchAndFill(page, year, month, child_);
+                }
+                else
+                {
+                    SearchAndFill(page, year, month, child_);
+                    SubSearch(child_, page, year, month);
+                }
+            }
+        }
+        
+        private void SearchAndFill(Pages page, int year, int month, Logic.Task child)
+        {
+            List<Rectangle> results = page.canvas._Rectangles[year][month].FindAll(x => x.Name == child.TaskName);
+            foreach (var item in results)
+            {
+                FillRectangle(item, child.TaskStatusColor);
+            }
+        }
     }
 }

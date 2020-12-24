@@ -12,63 +12,36 @@ namespace TODOList.Drawing.Navigation
     public class Pages
     {
         public Page page { get; private set; }
-        private Canvases canvas { get; set; }
+        public Canvases canvas { get; set; }
 
         public Pages()
         {
             page = new Page();
         }
 
-        public void CreatePage(Frames fr, int year, int month)
+        public void CreatePage(Frames fr, int year, int month, int yearIndex)
         {
-            CreateCanvas(year, month);
-            InitializeTasksOnCanvas(fr);
+            CreateCanvas(fr, year, month);
+            InitializeTasksOnCanvas(fr, yearIndex, month);
             page.Content = canvas._Scroll;
         }
 
-        public void NewTask(Logic.Task task)
+        private void CreateCanvas(Frames fr, int year, int month)
         {
-            canvas.AddLine(task);
+            canvas = new Canvases(fr, year, month);
         }
 
-        private void CreateCanvas(int year, int month)
+        private void InitializeTasksOnCanvas(Frames fr, int year, int month)
         {
-            canvas = new Canvases(year, month);
-        }
-
-        private void InitializeTasksOnCanvas(Frames fr)
-        {
-            foreach(var task in fr.TasksWithoutTree)
+            foreach (var task in fr.TasksWithoutTree)
             {
-                NewTask(task);
+                NewTask(task, year, month);
             }
         }
-        #region old
-        //private void CreateDataGrid(int month)
-        //{
-        //    DataGrid dg = new DataGrid();
-        //    dg.IsReadOnly = true;
-        //    dg.CanUserSortColumns = false;
-        //    dg.CanUserResizeColumns = false;
-        //    dg.AutoGenerateColumns = false;
 
-        //    DataGridTextColumn col1 = new DataGridTextColumn();
-        //    col1.Header = "Task name";
-        //    dg.Columns.Add(col1);
-        //    DataGridCheckBoxColumn col2 = new DataGridCheckBoxColumn();
-        //    col2.Header = "Performed";
-        //    dg.Columns.Add(col2);
-        //    DataGridCheckBoxColumn col3 = new DataGridCheckBoxColumn();
-        //    col3.Header = "Pause";
-        //    dg.Columns.Add(col3);
-        //    for (int i = 0; i < DateTime.DaysInMonth(DateTime.Now.Year, month); i++)
-        //    {
-        //        DataGridTextColumn col = new DataGridTextColumn();
-        //        col.Header = (i + 1).ToString();
-        //        dg.Columns.Add(col);
-        //    }
-        //    page.Content = dg;
-        //}
-        #endregion
+        public void NewTask(Logic.Task task, int year, int month)
+        {
+            canvas.AddLine(task, year, month);
+        }       
     }
 }

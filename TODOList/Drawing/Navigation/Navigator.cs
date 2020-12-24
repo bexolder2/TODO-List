@@ -27,24 +27,28 @@ namespace TODOList.Drawing.Navigation
 
         public void AddPages(Frames fr)
         {
+            int buffYear = CurrentYear;
+            CurrentYear = 0;
             int year = DateTime.Now.Year;
 
-            for (int i = 0; i <= frame_.NumberOfYears; i++)
+            for (int i = 0; i <= frame_.NumberOfYears; i++) //? =
             {
                 List<Pages> p = new List<Pages>();
                 for (int j = 0; j < 12; j++)
                 {
-                    p.Add(PageConstructor(fr, year, j + 1));
+                    p.Add(PageConstructor(fr, year, j + 1, CurrentYear));
                 }
                 pages_.Add(p);
+                ++CurrentYear;
                 ++year;
             }
+            CurrentYear = buffYear;
         }
 
-        private Pages PageConstructor(Frames fr, int year, int month)
+        private Pages PageConstructor(Frames fr, int year, int month, int yearIndex)
         {
             Pages page = new Pages();
-            page.CreatePage(fr, year, month);
+            page.CreatePage(fr, year, month, yearIndex);
             return page;
         }
     }

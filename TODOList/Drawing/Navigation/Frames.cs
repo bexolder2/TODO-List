@@ -37,6 +37,12 @@ namespace TODOList.Drawing.Navigation
         }
 
         #region convert
+        public void RefreshTaskList()
+        {
+            TasksWithoutTree = null;
+            TasksWithoutTree = new List<Logic.Task>();
+        }
+
         public void ConvertToList(Project project)
         {
             foreach (var child in project.Root)
@@ -77,8 +83,16 @@ namespace TODOList.Drawing.Navigation
             {
                 if (tmpYear.Find(x => x == task.Finish.Year) == 0)
                 {
-                    ++NumberOfYears;
-                    tmpYear.Add(task.Finish.Year);
+                    if(TasksWithoutTree.Count == 1)
+                    {
+                        NumberOfYears = task.Finish.Year - DateTime.Now.Year;
+                        //NumberOfYears = task.Finish.Year - task.Start.Year;//-1
+                    }
+                    else
+                    {
+                        ++NumberOfYears;
+                        tmpYear.Add(task.Finish.Year);
+                    }      
                 }     
             }
         }

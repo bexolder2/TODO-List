@@ -79,8 +79,6 @@
       <DependentUpon>NewTask.xaml</DependentUpon>
     </Compile>
     <Compile Include="Drawing\DrawContextMenu.cs" />
-    <Compile Include="Drawing\DrawDataGridRows.cs" />
-    <Compile Include="Drawing\DrawDiagram.cs" />
     <Compile Include="Dialogs\GetData.cs" />
     <Compile Include="Drawing\DrawTabControl.cs" />
     <Compile Include="Drawing\DrawTaskTree.cs" />

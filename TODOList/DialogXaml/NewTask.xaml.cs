@@ -27,6 +27,7 @@ namespace TODOList.DialogXaml
 
             dpSDate.DisplayDateStart = DateTime.Now;
             dpFDate.DisplayDateStart = DateTime.Now;
+            dpFDate.DisplayDateEnd = DateTime.Now.AddYears(1); 
             DataContext = GlobalVariables.BufferTask;
 
             this.Closing += NewTask_Closing;

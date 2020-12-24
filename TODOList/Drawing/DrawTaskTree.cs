@@ -60,7 +60,7 @@ namespace TODOList.Drawing
         {
             foreach (var child in project.Root)
             {
-                if (SelectedTask.Equals(child))
+                if (SelectedTask.Equals(child))//TODO: null check
                 {
                     switch (operations)
                     {
